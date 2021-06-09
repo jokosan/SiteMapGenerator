@@ -10,13 +10,12 @@ namespace SiteMapGenerator.Bll.Models.Bll
     {
         public ArchiveOfRequestBll()
         {
-            this.UrlSiteMap = new HashSet<UrlSiteMapBll>();
+            UrlSiteMaps = new HashSet<UrlSiteMapBll>();
         }
 
         public int IdArchiveOfRequests { get; set; }
         public string NameUrl { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UrlSiteMapBll> UrlSiteMap { get; set; }
+        public virtual ICollection<UrlSiteMapBll> UrlSiteMaps { get; set; }
     }
 }

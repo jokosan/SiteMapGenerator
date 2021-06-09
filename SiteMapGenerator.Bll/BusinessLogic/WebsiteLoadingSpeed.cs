@@ -1,4 +1,5 @@
-﻿using SiteMapGenerator.Bll.BusinessLogic.Contract;
+﻿using AutoMapper;
+using SiteMapGenerator.Bll.BusinessLogic.Contract;
 using SiteMapGenerator.Bll.Models.Bll;
 using SiteMapGenerator.Bll.Services.Contract;
 using SiteMapGeneratorDal.Infrastructure.UnitOfWork.Contract;
@@ -18,17 +19,20 @@ namespace SiteMapGenerator.Bll.BusinessLogic
         private readonly ILinkCheck _linkCheck;
         private readonly IUrlSiteMap _urlSiteMap;
         private readonly IPageInfo _pageInfo;
+        private readonly IMapper _mapper;
 
         public WebsiteLoadingSpeed(
             IUnitOfWork unitOfWork,
             ILinkCheck linkCheck,
             IUrlSiteMap urlSiteMap,
-            IPageInfo pageInfo)
+            IPageInfo pageInfo,
+            IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _linkCheck = linkCheck;
             _urlSiteMap = urlSiteMap;
             _pageInfo = pageInfo;
+            _mapper = mapper;
         }
 
         public List<string> SpeedPageUploads(List<string> url, int IdUrl)
@@ -36,8 +40,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             var sitemap = new UrlSiteMapBll();
             var pageInfo = new PageInfoBll();
             var listWebExceptionResponse = new List<string>();
-            //var sitmapResult = _unitOfWork.SitemapUnitOFWork.Get();
-            var sitmapResult = _urlSiteMap.GetTableAll();
+            var sitmapResult = _mapper.Map<IEnumerable<UrlSiteMapBll>>(_urlSiteMap.GetTableAll());
 
             foreach (var item in url)
             {
@@ -81,8 +84,6 @@ namespace SiteMapGenerator.Bll.BusinessLogic
                         pageInfo.Elapsed = sw.Elapsed;
 
                         _pageInfo.Insert(pageInfo);
-                        //_unitOfWork.PageInfoUnitOFWork.Insert(pageInfo);
-                        //_unitOfWork.Save();
                     }
                     else
                     {
@@ -113,8 +114,6 @@ namespace SiteMapGenerator.Bll.BusinessLogic
                         pageInfo.PageTestDate = DateTime.Now;
 
                         _pageInfo.Insert(pageInfo);
-                        //_unitOfWork.PageInfoUnitOFWork.Insert(pageInfo);
-                        //_unitOfWork.Save();
                     }
                 }
             }
@@ -131,9 +130,6 @@ namespace SiteMapGenerator.Bll.BusinessLogic
 
         private int SaveSitemap(UrlSiteMapBll row)
         {
-            //_unitOfWork.SitemapUnitOFWork.Insert(row);
-            //_unitOfWork.Save();
-
             _urlSiteMap.Insert(row);
             return row.IdSitemap;
         }

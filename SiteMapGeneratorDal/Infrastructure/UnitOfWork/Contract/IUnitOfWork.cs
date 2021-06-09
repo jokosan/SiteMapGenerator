@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SiteMapGeneratorDal.Infrastructure.UnitOfWork.Contract
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork
     {
         void Dispose();
 

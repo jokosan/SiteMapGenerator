@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SiteMapGenerator.Bll.Infrastructure.DependencyInjection;
+using SiteMapGenerator.Bll.Utilities.AutoMapper;
 using SiteMapGenerator.Utilities.AutoMapper;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,7 @@ namespace SiteMapGenerator
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddAutoMapper(typeof(EmployeeProfile));
+            services.AddAutoMapper(typeof(EmployeeProfileBll));
 
             DependencyResolverBll.Initialize(services);
         }

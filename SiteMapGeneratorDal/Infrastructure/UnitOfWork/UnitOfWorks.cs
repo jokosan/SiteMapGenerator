@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SiteMapGeneratorDal.Infrastructure.UnitOfWork
 {
-    public class UnitOfWorks : IUnitOfWork
+    public class UnitOfWorks : IUnitOfWork, IDisposable
     {
         internal TestTaskForNetDeveloperPositionContext _entities;
 

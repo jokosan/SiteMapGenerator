@@ -20,10 +20,12 @@ namespace SiteMapGenerator.Controllers
 
         public HomeController(
             //ILogger<HomeController> logger,
-            ILoadingSiteAddresses loadingSite)
+            ILoadingSiteAddresses loadingSite,
+            IMapper mapper)
         {
            // _logger = logger;
             _loadingSite = loadingSite;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
@@ -63,11 +65,11 @@ namespace SiteMapGenerator.Controllers
                 TempData.Keep("listError");
             }
 
-            return View(_loadingSite.GetSitemaps(id.Value));
+            return View(_mapper.Map<IEnumerable<UrlSiteMapModel>>(_loadingSite.GetSitemaps(id.Value)));
         }
 
         public IActionResult ArxivRequest()
-            => View(_loadingSite.Arxiv());
+            => View(_mapper.Map<IEnumerable<ArchiveOfRequestModel>>(_loadingSite.Arxiv()));
 
         public IActionResult ArxivDetails(int? id, DateTime? date)
         {
@@ -80,7 +82,7 @@ namespace SiteMapGenerator.Controllers
 
             if (date == null)
             {
-                var result = _loadingSite.Arxiv(id.Value);
+                var result = _mapper.Map<IEnumerable<JoinResultModel>>(_loadingSite.Arxiv(id.Value));
                 ViewBag.DateGroup = result.GroupBy(g =>
                     g.PageTestDate.Value.Date)
                     .ToDictionary(x => x.Key);
@@ -89,14 +91,9 @@ namespace SiteMapGenerator.Controllers
             }
             else
             {
-                return View(_loadingSite.Arxiv(id.Value, date.Value));
+                return View(_mapper.Map<IEnumerable<JoinResultModel>>(_loadingSite.Arxiv(id.Value, date.Value)));
             }
         }
-
-
-
-
-
 
         public IActionResult Privacy()
         {

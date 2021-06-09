@@ -12,7 +12,9 @@ namespace SiteMapGenerator.Utilities.AutoMapper
     {
         public EmployeeProfile()
         {
-            CreateMap<JoinResultModel, JoinResultBll>();
+            CreateMap<JoinResultModel, JoinResultBll>().ReverseMap();
+            CreateMap<ArchiveOfRequestModel, ArchiveOfRequestBll>().ReverseMap();
+            CreateMap<UrlSiteMapModel, UrlSiteMapBll>().ReverseMap(); ;
         }
     }
 }

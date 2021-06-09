@@ -1,4 +1,5 @@
-﻿using SiteMapGenerator.Bll.BusinessLogic.Contract;
+﻿using AutoMapper;
+using SiteMapGenerator.Bll.BusinessLogic.Contract;
 using SiteMapGenerator.Bll.Models.Bll;
 using SiteMapGenerator.Bll.Services.Contract;
 using SiteMapGeneratorDal.Infrastructure.UnitOfWork.Contract;
@@ -18,6 +19,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
         private readonly IUnitOfWork _unitOfWork;
         private readonly IOutput _output;
         private readonly IArchiveOfRequest _archiveOfRequest;
+        private readonly IMapper _mapper;
 
         public LoadingSiteAddresses(
             ILinkCheck linkCheck,
@@ -25,7 +27,8 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             IWebsiteLoadingSpeed websiteLoadingSpeed,
             IUnitOfWork unitOfWork,
             IOutput output,
-            IArchiveOfRequest archiveOfRequest)
+            IArchiveOfRequest archiveOfRequest,
+            IMapper mapper)
         {
             _linkCheck = linkCheck;
             _loadingPageUrls = loadingPageUrls;
@@ -33,11 +36,12 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             _unitOfWork = unitOfWork;
             _output = output;
             _archiveOfRequest = archiveOfRequest;
+            _mapper = mapper;
         }
 
         public int SaveUserRequest(string url)
         {
-            var resultArxiv = _unitOfWork.ArchiveOfRequestsUnitOfWork.Get();
+            var resultArxiv = _mapper.Map<IEnumerable<ArchiveOfRequestBll>>(_unitOfWork.ArchiveOfRequestsUnitOfWork.Get());
 
             if (resultArxiv.Any(x => x.NameUrl.Contains(url)))
             {
@@ -50,8 +54,6 @@ namespace SiteMapGenerator.Bll.BusinessLogic
                 archive.NameUrl = url;
 
                 _archiveOfRequest.Insert(archive);
-                //_unitOfWork.ArchiveOfRequestsUnitOfWork.Insert(archive);
-                //_unitOfWork.Save();
 
                 return archive.IdArchiveOfRequests;
             }
