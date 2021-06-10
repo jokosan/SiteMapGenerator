@@ -24,4 +24,10 @@
     <Folder Include="SiteMapGeneratorsDal\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SiteMapGenerator.Bll\SiteMapGenerator.Bll.csproj" />
+    <ProjectReference Include="..\SiteMapGeneratorDal\SiteMapGeneratorDal.csproj" />
+    <ProjectReference Include="..\SiteMapGenerator\SiteMapGenerator.csproj" />
+  </ItemGroup>
+
 </Project>
