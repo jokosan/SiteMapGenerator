@@ -56,8 +56,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
                         req.AllowAutoRedirect = false;
                         req.Accept = @"*/*";
 
-                        sw.Start(); // start Stopwatch
-
+                        sw.Start(); 
 
                         HttpWebResponse res = (HttpWebResponse)req.GetResponse();
                         var rescode = (int)res.StatusCode;
@@ -80,7 +79,6 @@ namespace SiteMapGenerator.Bll.BusinessLogic
                         pageInfo.WebsiteLoadingSpeed = sw.ElapsedTicks;
                         pageInfo.StatusCode = rescode;
                         pageInfo.PageTestDate = DateTime.Now;
-                        pageInfo.LastModified = res.LastModified;
                         pageInfo.Elapsed = sw.Elapsed;
 
                         _pageInfo.Insert(pageInfo);

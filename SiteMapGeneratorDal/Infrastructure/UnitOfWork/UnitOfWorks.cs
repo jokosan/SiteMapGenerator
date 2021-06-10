@@ -66,8 +66,6 @@ namespace SiteMapGeneratorDal.Infrastructure.UnitOfWork
         {
             _entities.SaveChanges();
         }
-
-
         #endregion
     }
 }

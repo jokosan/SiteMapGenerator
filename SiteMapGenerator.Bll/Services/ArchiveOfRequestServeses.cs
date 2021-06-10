@@ -27,7 +27,6 @@ namespace SiteMapGenerator.Bll.Services
         public IEnumerable<ArchiveOfRequestBll> GetTableAll()
             => _mapper.Map<IEnumerable<ArchiveOfRequestBll>>(_unitOfWork.ArchiveOfRequestsUnitOfWork.Get());
 
-
         public ArchiveOfRequestBll SelectId(int? elementId)
             => _mapper.Map<ArchiveOfRequestBll>(_unitOfWork.ArchiveOfRequestsUnitOfWork.GetById(elementId));
 

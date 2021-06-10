@@ -58,6 +58,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
                 var linkedPages = doc.DocumentNode.Descendants("a")
                                                   .Select(a => a.GetAttributeValue("href", null))
                                                   .Where(u => !String.IsNullOrEmpty(u));
+               
                 string http = "";
                 if (url.Contains("http://"))
                 {

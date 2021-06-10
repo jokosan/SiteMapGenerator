@@ -14,16 +14,13 @@ namespace SiteMapGenerator.Controllers
 {
     public class HomeController : Controller
     {
-        //private readonly ILogger<HomeController> _logger;
         private readonly ILoadingSiteAddresses _loadingSite;
         private readonly IMapper _mapper;
 
         public HomeController(
-            //ILogger<HomeController> logger,
             ILoadingSiteAddresses loadingSite,
             IMapper mapper)
         {
-           // _logger = logger;
             _loadingSite = loadingSite;
             _mapper = mapper;
         }
@@ -52,7 +49,7 @@ namespace SiteMapGenerator.Controllers
             }
         }
 
-        public ActionResult UserQueryResult(int? id)
+        public IActionResult UserQueryResult(int? id)
         {
             if (id == null)
             {
@@ -65,7 +62,7 @@ namespace SiteMapGenerator.Controllers
                 TempData.Keep("listError");
             }
 
-            return View(_mapper.Map<IEnumerable<UrlSiteMapModel>>(_loadingSite.GetSitemaps(id.Value)));
+            return View(_mapper.Map<IEnumerable<JoinResultModel>>(_loadingSite.GetSitemaps(id.Value)));
         }
 
         public IActionResult ArxivRequest()

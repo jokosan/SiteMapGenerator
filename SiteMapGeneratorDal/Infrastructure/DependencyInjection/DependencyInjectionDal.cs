@@ -16,7 +16,6 @@ namespace SiteMapGeneratorDal.Infrastructure.DependencyInjection
         public static void Initialize(IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork, UnitOfWorks>();
-            //services.AddTransient<IDefaultRepository<T>, DbRepository<T>();
         }
     }
 }

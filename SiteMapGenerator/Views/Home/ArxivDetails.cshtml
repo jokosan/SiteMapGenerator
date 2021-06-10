@@ -4,7 +4,6 @@
     ViewBag.Title = "ArxivDetails";
 }
 @using NonFactors.Mvc.Grid
-
 <link href="~/Content/MvcGrid/mvc-grid.css" rel="stylesheet" />
 <h2 class="text-center">ArxivDetails</h2>
 <hr />
@@ -13,7 +12,7 @@
     {
         foreach (var item in ViewBag.DateGroup)
         {
-            <a class="btn btn-outline-dark" href=@Url.Action("/ArxivDetails", new {date = @item.Key, id = @ViewBag.IdOrder })> @item.Key.ToString("dd.MM.yyyy") </a>
+            <a class="btn btn-outline-dark" href=@Url.Action("ArxivDetails", new {date = @item.Key, id = @ViewBag.IdOrder })> @item.Key.ToString("dd.MM.yyyy") </a>
         }
     }
 
@@ -26,15 +25,13 @@
                        .Build(columns =>
                        {
                            columns.Add(model => model.NameSite);
-                           columns.Add(model => model.LastModified);
                            columns.Add(model => model.StatusCode);
                            columns.Add(model => model.Elapsed);
                        })
                        .Using(GridFilterMode.Excel)
                        .Empty("No data found")
-                       .Filterable(GridFilterType.Single)
+                       .Filterable()
                        .Sortable()
-                        .Css("table")
                        .Pageable(pager =>
                        {
                            pager.PageSizes = new Dictionary<int, string> { { 10, "10" }, { 25, "25" }, { 50, "50" } };
@@ -46,9 +43,11 @@
     </div>
 </div>
 
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
 
-<script src="~/Scripts/MvcGrid/mvc-grid.js"></script>
-<script src="~/js/mvc-grid/mvc-grid.js"></script>
+<script src="~/js/mvc-grid.js"></script>
 <script>
     document.querySelectorAll(".mvc-grid").forEach(element => new MvcGrid(element));
 </script>
+<script src="~/js/site.js"></script>

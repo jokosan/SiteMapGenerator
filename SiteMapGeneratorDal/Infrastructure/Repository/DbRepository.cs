@@ -75,6 +75,5 @@ namespace SiteMapGeneratorDal.Infrastructure.Repository
         public IEnumerable<T> GetInclude(string children)
             => DbSeT.Include(children).AsNoTracking().AsEnumerable<T>().AsQueryable();
         #endregion
-
     }
 }

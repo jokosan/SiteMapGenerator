@@ -56,7 +56,6 @@ namespace SiteMapGenerator.Bll.BusinessLogic
                               });
 
             return resultJoin.AsEnumerable();
-
         }
     }
 }
