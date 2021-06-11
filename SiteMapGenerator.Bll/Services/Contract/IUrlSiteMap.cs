@@ -1,14 +1,10 @@
 ﻿using SiteMapGenerator.Bll.Models.Bll;
 using SiteMapGenerator.Bll.Services.Contract.GenericContract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SiteMapGenerator.Dal.Models.Dal;
 
 namespace SiteMapGenerator.Bll.Services.Contract
 {
-    public interface IUrlSiteMap : IGetFromDatabase<UrlSiteMapBll>, IDatabaseOperations<UrlSiteMapBll>
+    public interface IUrlSiteMap : IGetFromDatabase<UrlSiteMap>, IDatabaseOperations<UrlSiteMap>
     {
     }
 }

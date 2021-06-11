@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Moq;
+﻿using Moq;
 using SiteMapGenerator.Bll.BusinessLogic;
 using SiteMapGenerator.Bll.BusinessLogic.Contract;
 using Xunit;
@@ -15,7 +10,7 @@ namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
         private Mock<ILinkCheck> LinkCheckUrlMock = new Mock<ILinkCheck>();
 
         [Fact]
-        public void UrlValidation_()
+        public void UrlValidation_CheckingUserUrl_ResultTrue()
         {
             // Arrange      
             string url = "http://microsoft.com/";
@@ -25,7 +20,7 @@ namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
             //  Act
             LinkCheckUrlMock.SetupSequence(p => p.UrlValidation(url))
                 .Returns(resultUrlValidation);
-            
+
             var urlResult = linkCheck.UrlValidation(url);
 
             // Assert
@@ -33,7 +28,7 @@ namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
         }
 
         [Fact]
-        public void UrlValidation_2()
+        public void UrlValidation_CheckingUserUrl_ResultFalse()
         {
             // Arrange      
             string url = "microsoft.com";
@@ -51,10 +46,10 @@ namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
         }
 
         [Fact]
-        public void AddressHost_()
+        public void AddressHost_CheckingHostAvailability_ReturnStringUrl()
         {
             // Arrange
-            string url = "http://microsoft.com";
+            string url = "http://microsoft.com/";
             var linkCheck = new LinkCheck();
 
             // Act

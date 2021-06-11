@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-#nullable disable
-
-namespace SiteMapGeneratorDal.dbContext
+namespace SiteMapGenerator.Dal.Models.Dal
 {
-    public partial class PageInfo
+    public class PageInfo
     {
+        [Key]
         public int IdPageInfo { get; set; }
         public int? SitemapId { get; set; }
         public long? WebsiteLoadingSpeed { get; set; }
         public int? StatusCode { get; set; }
         public DateTime? PageTestDate { get; set; }
-        public DateTime? LastModified { get; set; }
         public TimeSpan? Elapsed { get; set; }
     }
 }
+

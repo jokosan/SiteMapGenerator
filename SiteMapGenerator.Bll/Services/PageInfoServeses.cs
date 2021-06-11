@@ -1,48 +1,37 @@
-﻿using AutoMapper;
-using SiteMapGenerator.Bll.Models.Bll;
+﻿using SiteMapGenerator.Bll.Models.Bll;
 using SiteMapGenerator.Bll.Services.Contract;
-using SiteMapGeneratorDal.dbContext;
-using SiteMapGeneratorDal.Infrastructure.UnitOfWork.Contract;
-using System;
+using SiteMapGenerator.Dal.Models.Dal;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
 
 namespace SiteMapGenerator.Bll.Services
 {
     public class PageInfoServeses : IPageInfo
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        private readonly IRepository<PageInfo> _repositoryPageInfo;
 
         public PageInfoServeses(
-            IUnitOfWork unitOfWork,
-            IMapper mapper)
+            IRepository<PageInfo> repositoryPageInfo)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            _repositoryPageInfo = repositoryPageInfo;
         }
 
-        public IEnumerable<PageInfoBll> GetTableAll()
-            => _mapper.Map<IEnumerable<PageInfoBll>>(_unitOfWork.PageInfoUnitOFWork.Get());
+        public IEnumerable<PageInfo> GetTableAll()
+            => _repositoryPageInfo.GetAll();
 
-        public PageInfoBll SelectId(int? elementId)
-           => _mapper.Map<PageInfoBll>(_unitOfWork.PageInfoUnitOFWork.GetById(elementId));
+        public PageInfo SelectId(int? elementId)
+           => _repositoryPageInfo.GetById(elementId.Value);
 
-        public void Insert(PageInfoBll element)
+        public void Insert(PageInfo element)
         {
-            _unitOfWork.PageInfoUnitOFWork.Insert(EntityTransformation(element));
-            _unitOfWork.Save();
+            _repositoryPageInfo.Add(element);
+            _repositoryPageInfo.SaveChanges();
         }
 
-        public void Update(PageInfoBll elementToUpdate)
+        public void Update(PageInfo elementToUpdate)
         {
-            _unitOfWork.PageInfoUnitOFWork.Update(EntityTransformation(elementToUpdate));
-            _unitOfWork.Save();
+            _repositoryPageInfo.Update(elementToUpdate);
+            _repositoryPageInfo.SaveChanges();
         }
-
-        private PageInfo EntityTransformation(PageInfoBll entity)
-          => _mapper.Map<PageInfoBll, PageInfo>(entity);
     }
 }

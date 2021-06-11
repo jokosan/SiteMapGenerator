@@ -4,8 +4,6 @@ using SiteMapGenerator.Bll.Services.Contract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SiteMapGenerator.Bll.BusinessLogic
 {
@@ -58,7 +56,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
                 var linkedPages = doc.DocumentNode.Descendants("a")
                                                   .Select(a => a.GetAttributeValue("href", null))
                                                   .Where(u => !String.IsNullOrEmpty(u));
-               
+
                 string http = "";
                 if (url.Contains("http://"))
                 {

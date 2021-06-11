@@ -2,15 +2,10 @@
 using SiteMapGenerator.Bll.BusinessLogic;
 using SiteMapGenerator.Bll.BusinessLogic.Contract;
 using SiteMapGenerator.Bll.Services.Contract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SiteMapGenerator.Bll.Infrastructure.DependencyInjection
 {
-   public class DependencyResolverBusinessLogic
+    public class DependencyResolverBusinessLogic
     {
         public static void Initialize(IServiceCollection services)
         {

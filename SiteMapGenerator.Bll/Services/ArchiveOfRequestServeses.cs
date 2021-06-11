@@ -1,48 +1,36 @@
-﻿using AutoMapper;
-using SiteMapGenerator.Bll.Models.Bll;
-using SiteMapGenerator.Bll.Services.Contract;
-using SiteMapGeneratorDal.dbContext;
-using SiteMapGeneratorDal.Infrastructure.UnitOfWork.Contract;
-using System;
+﻿using SiteMapGenerator.Bll.Services.Contract;
+using SiteMapGenerator.Dal.Models.Dal;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
 
 namespace SiteMapGenerator.Bll.Services
 {
     public class ArchiveOfRequestServeses : IArchiveOfRequest
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        private readonly IRepository<ArchiveOfRequest> _repositoryArchiveOfRequest;
 
         public ArchiveOfRequestServeses(
-            IUnitOfWork unitOfWork,
-            IMapper mapper)
+            IRepository<ArchiveOfRequest> repositoryArchiveOfRequest)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            _repositoryArchiveOfRequest = repositoryArchiveOfRequest;
         }
 
-        public IEnumerable<ArchiveOfRequestBll> GetTableAll()
-            => _mapper.Map<IEnumerable<ArchiveOfRequestBll>>(_unitOfWork.ArchiveOfRequestsUnitOfWork.Get());
+        public IEnumerable<ArchiveOfRequest> GetTableAll() =>
+            _repositoryArchiveOfRequest.GetAll();
 
-        public ArchiveOfRequestBll SelectId(int? elementId)
-            => _mapper.Map<ArchiveOfRequestBll>(_unitOfWork.ArchiveOfRequestsUnitOfWork.GetById(elementId));
+        public ArchiveOfRequest SelectId(int? elementId)
+            => _repositoryArchiveOfRequest.GetById(elementId.Value);
 
-        public void Insert(ArchiveOfRequestBll element)
+        public void Insert(ArchiveOfRequest element)
         {
-            _unitOfWork.ArchiveOfRequestsUnitOfWork.Insert(EntityTransformation(element));
-            _unitOfWork.Save();
+            _repositoryArchiveOfRequest.Add(element);
+            _repositoryArchiveOfRequest.SaveChanges();
         }
 
-        public void Update(ArchiveOfRequestBll elementToUpdate)
+        public void Update(ArchiveOfRequest elementToUpdate)
         {
-            _unitOfWork.ArchiveOfRequestsUnitOfWork.Update(EntityTransformation(elementToUpdate));
-            _unitOfWork.Save();
+            _repositoryArchiveOfRequest.Update(elementToUpdate);
+            _repositoryArchiveOfRequest.SaveChanges();
         }
-
-        private ArchiveOfRequest EntityTransformation(ArchiveOfRequestBll entity)
-            => _mapper.Map<ArchiveOfRequestBll, ArchiveOfRequest>(entity);
     }
 }

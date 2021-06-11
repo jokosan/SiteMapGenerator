@@ -1,48 +1,37 @@
-﻿using AutoMapper;
-using SiteMapGenerator.Bll.Models.Bll;
+﻿using SiteMapGenerator.Bll.Models.Bll;
 using SiteMapGenerator.Bll.Services.Contract;
-using SiteMapGeneratorDal.dbContext;
-using SiteMapGeneratorDal.Infrastructure.UnitOfWork.Contract;
-using System;
+using SiteMapGenerator.Dal.Models.Dal;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
 
 namespace SiteMapGenerator.Bll.Services
 {
     public class UrlSiteMapServeses : IUrlSiteMap
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        private readonly IRepository<UrlSiteMap> _repositoryUrlSiteMap;
 
         public UrlSiteMapServeses(
-            IUnitOfWork unitOfWork,
-            IMapper mapper)
+            IRepository<UrlSiteMap> repositoryUrlSiteMap)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            _repositoryUrlSiteMap = repositoryUrlSiteMap;
         }
 
-        public IEnumerable<UrlSiteMapBll> GetTableAll()
-            => _mapper.Map<IEnumerable<UrlSiteMapBll>>(_unitOfWork.SitemapUnitOFWork.Get());
+        public IEnumerable<UrlSiteMap> GetTableAll()
+            => _repositoryUrlSiteMap.GetAll();
 
-        public UrlSiteMapBll SelectId(int? elementId)
-            => _mapper.Map<UrlSiteMapBll>(_unitOfWork.SitemapUnitOFWork.GetById(elementId));
+        public UrlSiteMap SelectId(int? elementId)
+            => _repositoryUrlSiteMap.GetById(elementId.Value);
 
-        public void Insert(UrlSiteMapBll element)
+        public void Insert(UrlSiteMap element)
         {
-            _unitOfWork.SitemapUnitOFWork.Insert(EntityTransformation(element));
-            _unitOfWork.Save();
+            _repositoryUrlSiteMap.Add(element);
+            _repositoryUrlSiteMap.SaveChanges();
         }
 
-        public void Update(UrlSiteMapBll elementToUpdate)
+        public void Update(UrlSiteMap elementToUpdate)
         {
-            _unitOfWork.SitemapUnitOFWork.Update(EntityTransformation(elementToUpdate));
-            _unitOfWork.Save();
+            _repositoryUrlSiteMap.Update(elementToUpdate);
+            _repositoryUrlSiteMap.SaveChanges();
         }
-
-        private UrlSiteMap EntityTransformation(UrlSiteMapBll entity)
-          => _mapper.Map<UrlSiteMapBll, UrlSiteMap>(entity);
     }
 }

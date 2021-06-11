@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-#nullable disable
-
-namespace SiteMapGeneratorDal.dbContext
+namespace SiteMapGenerator.Dal.Models.Dal
 {
-    public partial class ArchiveOfRequest
+    public class ArchiveOfRequest
     {
         public ArchiveOfRequest()
         {
             UrlSiteMaps = new HashSet<UrlSiteMap>();
         }
 
+        [Key]
         public int IdArchiveOfRequests { get; set; }
         public string NameUrl { get; set; }
 

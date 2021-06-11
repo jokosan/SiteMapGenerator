@@ -1,28 +1,22 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Logging;
 using SiteMapGenerator.Bll.Services.Contract;
 using SiteMapGenerator.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SiteMapGenerator.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILoadingSiteAddresses _loadingSite;
-        private readonly IMapper _mapper;
 
         public HomeController(
-            ILoadingSiteAddresses loadingSite,
-            IMapper mapper)
+            ILoadingSiteAddresses loadingSite)
         {
             _loadingSite = loadingSite;
-            _mapper = mapper;
         }
 
         public IActionResult Index()
@@ -62,11 +56,11 @@ namespace SiteMapGenerator.Controllers
                 TempData.Keep("listError");
             }
 
-            return View(_mapper.Map<IEnumerable<JoinResultModel>>(_loadingSite.GetSitemaps(id.Value)));
+            return View(_loadingSite.GetSitemaps(id.Value));
         }
 
         public IActionResult ArxivRequest()
-            => View(_mapper.Map<IEnumerable<ArchiveOfRequestModel>>(_loadingSite.Arxiv()));
+            => View(_loadingSite.Arxiv());
 
         public IActionResult ArxivDetails(int? id, DateTime? date)
         {
@@ -79,16 +73,20 @@ namespace SiteMapGenerator.Controllers
 
             if (date == null)
             {
-                var result = _mapper.Map<IEnumerable<JoinResultModel>>(_loadingSite.Arxiv(id.Value));
-                ViewBag.DateGroup = result.GroupBy(g =>
-                    g.PageTestDate.Value.Date)
-                    .ToDictionary(x => x.Key);
+                var result = _loadingSite.Arxiv(id.Value);
 
+                if (result.Count() != 0 || result != null)
+                {
+                    ViewBag.DateGroup = result.GroupBy(g =>
+                        g.PageTestDate.Value.Date)
+                        .ToDictionary(x => x.Key);
+                }
+                
                 return View(result);
             }
             else
             {
-                return View(_mapper.Map<IEnumerable<JoinResultModel>>(_loadingSite.Arxiv(id.Value, date.Value)));
+                return View(_loadingSite.Arxiv(id.Value, date.Value));
             }
         }
 

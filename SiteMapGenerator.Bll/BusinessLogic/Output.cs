@@ -1,26 +1,21 @@
-﻿using AutoMapper;
-using SiteMapGenerator.Bll.Models.Bll;
+﻿using SiteMapGenerator.Bll.Models.Bll;
 using SiteMapGenerator.Bll.Services.Contract;
-using SiteMapGeneratorDal.Infrastructure.UnitOfWork.Contract;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SiteMapGenerator.Bll.BusinessLogic
 {
     public class Output : IOutput
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        private readonly IUrlSiteMap _urlSiteMap;
+        private readonly IPageInfo _pageInfo;
 
         public Output(
-            IUnitOfWork unitOfWork,
-            IMapper mapper)
+            IUrlSiteMap urlSiteMap,
+            IPageInfo pageInfo)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            _urlSiteMap = urlSiteMap;
+            _pageInfo = pageInfo;
         }
 
         public IEnumerable<JoinResultBll> JoinTableGroup(IEnumerable<JoinResultBll> joinResultModels)
@@ -38,8 +33,10 @@ namespace SiteMapGenerator.Bll.BusinessLogic
 
         public IEnumerable<JoinResultBll> JoinTable(int id)
         {
-            var siteMapResult = _mapper.Map<IEnumerable<UrlSiteMapBll>>(_unitOfWork.SitemapUnitOFWork.QueryObjectGraph(x => x.ArchiveOfRequestsId == id));
-            var pageInfoResult = _mapper.Map<IEnumerable<PageInfoBll>>(_unitOfWork.PageInfoUnitOFWork.Get());
+            var siteMapResult = _urlSiteMap.GetTableAll();
+            var siteMapResultWhere =  siteMapResult.Where(x => x.ArchiveOfRequestsId == id);
+
+            var pageInfoResult = _pageInfo.GetTableAll();
 
             var resultJoin = (from t1 in siteMapResult
                               join t2 in pageInfoResult on t1.IdSitemap equals t2.SitemapId
@@ -51,8 +48,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
                                   StatusCode = t2.StatusCode,
                                   WebsiteLoadingSpeed = t2.WebsiteLoadingSpeed,
                                   PageTestDate = t2.PageTestDate.Value.Date,
-                                  Elapsed = t2.Elapsed,
-                                  LastModified = t2.LastModified
+                                  Elapsed = t2.Elapsed
                               });
 
             return resultJoin.AsEnumerable();

@@ -1,14 +1,9 @@
-﻿using SiteMapGenerator.Bll.Models.Bll;
-using SiteMapGenerator.Bll.Services.Contract.GenericContract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SiteMapGenerator.Bll.Services.Contract.GenericContract;
+using SiteMapGenerator.Dal.Models.Dal;
 
 namespace SiteMapGenerator.Bll.Services.Contract
 {
-    public interface IArchiveOfRequest : IGetFromDatabase<ArchiveOfRequestBll>, IDatabaseOperations<ArchiveOfRequestBll>
+    public interface IArchiveOfRequest : IGetFromDatabase<ArchiveOfRequest>, IDatabaseOperations<ArchiveOfRequest>
     {
     }
 }

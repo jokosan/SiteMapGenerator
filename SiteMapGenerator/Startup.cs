@@ -1,16 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SiteMapGenerator.Bll.Infrastructure.DependencyInjection;
-using SiteMapGenerator.Bll.Utilities.AutoMapper;
-using SiteMapGenerator.Utilities.AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using SiteMapGenerator.Bll.Utilities;
 
 namespace SiteMapGenerator
 {
@@ -28,10 +22,9 @@ namespace SiteMapGenerator
         {
             services.AddControllersWithViews();
             services.AddRazorPages();
-            services.AddAutoMapper(typeof(EmployeeProfile));
-            services.AddAutoMapper(typeof(EmployeeProfileBll));
 
             DependencyResolverBll.Initialize(services);
+            DbContextServiceCollectionBll.Initialize(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
