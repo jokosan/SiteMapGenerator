@@ -34,7 +34,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
         public IEnumerable<JoinResultBll> JoinTable(int id)
         {
             var siteMapResult = _urlSiteMap.GetTableAll();
-            var siteMapResultWhere =  siteMapResult.Where(x => x.ArchiveOfRequestsId == id);
+            var siteMapResultWhere = siteMapResult.Where(x => x.ArchiveOfRequestsId == id);
 
             var pageInfoResult = _pageInfo.GetTableAll();
 

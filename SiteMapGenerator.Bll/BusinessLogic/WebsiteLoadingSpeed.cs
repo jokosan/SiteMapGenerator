@@ -1,5 +1,4 @@
 ﻿using SiteMapGenerator.Bll.BusinessLogic.Contract;
-using SiteMapGenerator.Bll.Models.Bll;
 using SiteMapGenerator.Bll.Services.Contract;
 using SiteMapGenerator.Dal.Models.Dal;
 using System;
@@ -28,7 +27,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
 
         public List<string> SpeedPageUploads(List<string> url, int IdUrl)
         {
-           
+
             var listWebExceptionResponse = new List<string>();
             var sitmapResult = _urlSiteMap.GetTableAll();
 

@@ -22,7 +22,6 @@ namespace SiteMapGenerator.Controllers
         public IActionResult Index()
                  => View();
 
-
         [HttpGet]
         public IActionResult UrlPages(string url, int? numberOfLinks)
         {
@@ -81,7 +80,7 @@ namespace SiteMapGenerator.Controllers
                         g.PageTestDate.Value.Date)
                         .ToDictionary(x => x.Key);
                 }
-                
+
                 return View(result);
             }
             else

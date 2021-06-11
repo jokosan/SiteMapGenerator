@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SiteMapGenerator.Bll.Infrastructure.DependencyInjection;
-using SiteMapGenerator.Bll.Utilities;
+using SiteMapGeneratorDal.Utilities;
 
 namespace SiteMapGenerator
 {
@@ -24,7 +24,7 @@ namespace SiteMapGenerator
             services.AddRazorPages();
 
             DependencyResolverBll.Initialize(services);
-            DbContextServiceCollectionBll.Initialize(services);
+            DbContextServiceCollectionDal.Initialize(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

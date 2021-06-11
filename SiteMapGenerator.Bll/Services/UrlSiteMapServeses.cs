@@ -1,5 +1,4 @@
-﻿using SiteMapGenerator.Bll.Models.Bll;
-using SiteMapGenerator.Bll.Services.Contract;
+﻿using SiteMapGenerator.Bll.Services.Contract;
 using SiteMapGenerator.Dal.Models.Dal;
 using System.Collections.Generic;
 using System.Data;
