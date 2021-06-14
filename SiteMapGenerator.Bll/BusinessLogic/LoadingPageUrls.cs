@@ -25,6 +25,10 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             do
             {
                 int indexList = 1 + i;
+
+                if (indexList >= countLink)
+                    break;
+
                 string selectUriList = linksResult[indexList];
 
                 if (_linkCheck.UrlValidation(selectUriList))
