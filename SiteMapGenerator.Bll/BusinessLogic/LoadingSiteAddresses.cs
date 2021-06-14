@@ -50,8 +50,11 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             }
         }
 
-        public List<string> Loading(string url, int numberOfLinks, int IdUri)
+        public List<JoinResultBll> Loading(string url, int numberOfLinks, int IdUri)
             => _websiteLoadingSpeed.SpeedPageUploads(_loadingPageUrls.ExtractHref(url, numberOfLinks), IdUri);
+
+        public List<JoinResultBll> Loading(string url, int numberOfLinks)
+           => _websiteLoadingSpeed.SpeedPageUploads(_loadingPageUrls.ExtractHref(url, numberOfLinks));
 
         public bool ValidationAddresses(string url)
             => _linkCheck.UrlValidation(_linkCheck.AddressHost(url));

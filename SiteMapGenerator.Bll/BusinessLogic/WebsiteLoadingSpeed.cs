@@ -1,10 +1,9 @@
 ﻿using SiteMapGenerator.Bll.BusinessLogic.Contract;
+using SiteMapGenerator.Bll.Models.Bll;
 using SiteMapGenerator.Bll.Services.Contract;
-using SiteMapGenerator.Dal.Models.Dal;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
 
 namespace SiteMapGenerator.Bll.BusinessLogic
@@ -12,116 +11,74 @@ namespace SiteMapGenerator.Bll.BusinessLogic
     public class WebsiteLoadingSpeed : IWebsiteLoadingSpeed
     {
         private readonly ILinkCheck _linkCheck;
-        private readonly IUrlSiteMap _urlSiteMap;
-        private readonly IPageInfo _pageInfo;
 
         public WebsiteLoadingSpeed(
-            ILinkCheck linkCheck,
-            IUrlSiteMap urlSiteMap,
-            IPageInfo pageInfo)
+            ILinkCheck linkCheck
+            )
         {
             _linkCheck = linkCheck;
-            _urlSiteMap = urlSiteMap;
-            _pageInfo = pageInfo;
         }
 
-        public List<string> SpeedPageUploads(List<string> url, int IdUrl)
+        public List<JoinResultBll> SpeedPageUploads(List<string> url, int? IdUrl = null)
         {
-
-            var listWebExceptionResponse = new List<string>();
-            var sitmapResult = _urlSiteMap.GetTableAll();
+            var resultSiteMapList = new List<JoinResultBll>();
 
             foreach (var item in url)
             {
-                var sitemap = new UrlSiteMap();
-                var pageInfo = new PageInfo();
-
                 try
                 {
                     if (_linkCheck.UrlValidation(item))
                     {
-                        Stopwatch sw = new Stopwatch();
-
-                        HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(item);
-
-                        req.Method = WebRequestMethods.Http.Get;
-                        req.AllowAutoRedirect = false;
-                        req.Accept = @"*/*";
+                        var sw = new Stopwatch();
+                        var req = HttpGet(item);
 
                         sw.Start();
-
                         HttpWebResponse res = (HttpWebResponse)req.GetResponse();
                         var rescode = (int)res.StatusCode;
                         sw.Stop();
+
                         res.Close();
 
                         TimeSpan timeToLoad = sw.Elapsed;
 
-                        if (sitmapResult.Any(x => x.NameSite.Contains(item)))
-                        {
-                            pageInfo.SitemapId = SaveTableSiteMap(sitmapResult, item);
-                        }
-                        else
-                        {
-                            sitemap.ArchiveOfRequestsId = IdUrl;
-                            sitemap.NameSite = item;
-                            pageInfo.SitemapId = SaveSitemap(sitemap);
-                        }
-
-                        pageInfo.WebsiteLoadingSpeed = sw.ElapsedTicks;
-                        pageInfo.StatusCode = rescode;
-                        pageInfo.PageTestDate = DateTime.Now;
-                        pageInfo.Elapsed = sw.Elapsed;
-
-                        _pageInfo.Insert(pageInfo);
+                        resultSiteMapList.Add(createJoinResultBll(item, rescode, sw));
                     }
-                    else
-                    {
-                        listWebExceptionResponse.Add($"URI Invalid {item}");
-                    }
-
                 }
-                catch (WebException ex)
+                catch
                 {
-                    if (ex.Response == null)
-                    {
-                        listWebExceptionResponse.Add(ex.Message);
-                    }
-                    else
-                    {
-                        if (sitmapResult.Any(x => x.NameSite.Contains(item)))
-                        {
-                            pageInfo.SitemapId = SaveTableSiteMap(sitmapResult, item);
-                        }
-                        else
-                        {
-                            sitemap.ArchiveOfRequestsId = IdUrl;
-                            sitemap.NameSite = item;
-                            pageInfo.SitemapId = SaveSitemap(sitemap);
-                        }
-
-                        pageInfo.StatusCode = (int)((HttpWebResponse)ex.Response).StatusCode;
-                        pageInfo.PageTestDate = DateTime.Now;
-
-                        _pageInfo.Insert(pageInfo);
-                    }
+                    resultSiteMapList.Add(createJoinResultBll(item, 404));
                 }
             }
 
-            return listWebExceptionResponse;
+            return resultSiteMapList;
         }
 
-        private int SaveTableSiteMap(IEnumerable<UrlSiteMap> urlSiteMaps, string item)
+        private HttpWebRequest HttpGet(string url)
         {
-            var result = urlSiteMaps.Where(x => x.NameSite.Contains(item));
-            var resultWhere = result.LastOrDefault();
-            return resultWhere.IdSitemap;
+            HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(url);
+
+            req.Method = WebRequestMethods.Http.Get;
+            req.AllowAutoRedirect = false;
+            req.Accept = @"*/*";
+
+            return req;
         }
 
-        private int SaveSitemap(UrlSiteMap row)
+        private JoinResultBll createJoinResultBll(string url, int rescode, Stopwatch sw = null)
         {
-            _urlSiteMap.Insert(row);
-            return row.IdSitemap;
+            var resultJoinResult = new JoinResultBll();
+
+            resultJoinResult.NameSite = url;
+            resultJoinResult.StatusCode = rescode;
+            resultJoinResult.PageTestDate = DateTime.Now;
+
+            if (sw != null)
+            {
+                resultJoinResult.WebsiteLoadingSpeed = sw.ElapsedTicks;
+                resultJoinResult.Elapsed = sw.Elapsed;
+            }
+
+            return resultJoinResult;
         }
     }
 }

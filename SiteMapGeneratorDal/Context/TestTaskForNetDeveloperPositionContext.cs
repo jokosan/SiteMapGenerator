@@ -22,6 +22,8 @@ namespace SiteMapGeneratorDal.dbContext
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(TestTaskForNetDeveloperPositionContext).Assembly);
             base.OnModelCreating(modelBuilder);
+
+
         }
 
     }

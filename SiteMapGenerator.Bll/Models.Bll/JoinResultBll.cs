@@ -11,7 +11,6 @@ namespace SiteMapGenerator.Bll.Models.Bll
         public long? WebsiteLoadingSpeed { get; set; }
         public int? StatusCode { get; set; }
         public DateTime? PageTestDate { get; set; }
-        public DateTime? LastModified { get; set; }
         public TimeSpan? Elapsed { get; set; }
         public TimeSpan? ElapsedMin { get; set; }
         public TimeSpan? ElapsedMax { get; set; }

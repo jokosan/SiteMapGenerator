@@ -28,7 +28,7 @@ namespace SiteMapGenerator.Controllers
             if (_loadingSite.ValidationAddresses(url) && numberOfLinks != null)
             {
                 int idLink = _loadingSite.SaveUserRequest(url);
-                TempData["listError"] = _loadingSite.Loading(url, numberOfLinks.Value, idLink);
+                TempData["listError"] = _loadingSite.Loading(url, numberOfLinks.Value);
 
                 return RedirectToAction("UserQueryResult", "Home", new RouteValueDictionary(new
                 {

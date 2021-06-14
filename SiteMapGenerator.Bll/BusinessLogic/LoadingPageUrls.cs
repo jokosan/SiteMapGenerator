@@ -46,8 +46,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
         private List<string> SearchForLinks(string url)
         {
             var urlList = new List<string>();
-            if (urlList.Contains(url) == false)
-                urlList.Add(url);
+            urlList.Add(url);
 
             try
             {
@@ -57,15 +56,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
                                                   .Select(a => a.GetAttributeValue("href", null))
                                                   .Where(u => !String.IsNullOrEmpty(u));
 
-                string http = "";
-                if (url.Contains("http://"))
-                {
-                    http = "http://";
-                }
-                else
-                {
-                    http = "https://";
-                }
+                string http = SelectHttp(url);
 
                 string urls = url.Replace(http, string.Empty);
                 string result = urls.Trim(new char[] { '/', ':' });
@@ -96,5 +87,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
                 return new List<string>();
             }
         }
+
+        private string SelectHttp(string url) => url.Contains("http://") ? "http://" : "https://";
     }
 }
