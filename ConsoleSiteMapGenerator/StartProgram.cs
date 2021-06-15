@@ -28,6 +28,7 @@ namespace ConsoleSiteMapGenerator
             if (!_loadingSiteAddresses.ValidationAddresses(userUrl))
             {
                 _userInteraction.Info(MessageUsers.MessageIncorrectUrl);
+
                 return;
             }
 

@@ -19,7 +19,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
 
         public List<string> ExtractHref(string URL, int countLink)
         {
-            var linksResult = SearchForLinks(URL);
+            var linksResult = SearchForLinks(URL, HtmlParser(URL));
             int i = 0;
 
             do
@@ -33,7 +33,8 @@ namespace SiteMapGenerator.Bll.BusinessLogic
 
                 if (_linkCheck.UrlValidation(selectUriList))
                 {
-                    linksResult.AddRange(SearchForLinks(linksResult[indexList]));
+                    var resultHtmlParser = HtmlParser(selectUriList);
+                    linksResult.AddRange(SearchForLinks(selectUriList, resultHtmlParser));
                 }
                 else
                 {
@@ -47,49 +48,45 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             return linksResult.OrderBy(x => x.Length).ToList();
         }
 
-        private List<string> SearchForLinks(string url)
+        private IEnumerable<string> HtmlParser(string urlName)
         {
-            var urlList = new List<string>();
-            urlList.Add(url);
+            var doc = new HtmlWeb().Load(urlName);
+            var linkTags = doc.DocumentNode.Descendants("link");
+            
+            return  doc.DocumentNode.Descendants("a")
+                                    .Select(a => a.GetAttributeValue("href", null))
+                                    .Where(u => !String.IsNullOrEmpty(u));
+        }
 
-            try
+        private List<string> SearchForLinks(string url, IEnumerable<string> linkedPages)
+        {
+            var urlList = new List<string> { url };
+
+            string http = SelectHttp(url);
+
+            string urls = url.Replace(http, string.Empty);
+            string result = urls.Trim(new char[] { '/', ':' });
+
+            foreach (var item in linkedPages)
             {
-                var doc = new HtmlWeb().Load(url);
-                var linkTags = doc.DocumentNode.Descendants("link");
-                var linkedPages = doc.DocumentNode.Descendants("a")
-                                                  .Select(a => a.GetAttributeValue("href", null))
-                                                  .Where(u => !String.IsNullOrEmpty(u));
-
-                string http = SelectHttp(url);
-
-                string urls = url.Replace(http, string.Empty);
-                string result = urls.Trim(new char[] { '/', ':' });
-
-                foreach (var item in linkedPages)
+                if (urlList.Any(x => x.Contains(item)) == false)
                 {
-                    if (urlList.Any(x => x.Contains(item)) == false)
+                    if (item.Contains(url))
                     {
-                        if (item.Contains(url))
-                        {
-                            urlList.Add(item);
-                        }
-                        else if (item.Contains(result) && item.Contains("//"))
-                        {
-                            urlList.Add($"{http}{item.Replace("//", string.Empty)}");
-                        }
-                        else if (item.StartsWith("http://") == false && item.StartsWith("https://") == false)
-                        {
-                            urlList.Add(url + item.TrimStart(new char[] { '/' }));
-                        }
+                        urlList.Add(item);
+                    }
+                    else if (item.Contains(result) && item.Contains("//"))
+                    {
+                        urlList.Add($"{http}{item.Replace("//", string.Empty)}");
+                    }
+                    else if (item.StartsWith("http://") == false && item.StartsWith("https://") == false)
+                    {
+                        urlList.Add(url + item.TrimStart(new char[] { '/' }));
                     }
                 }
+            }
 
-                return urlList.OrderBy(x => x.Length).ToList();
-            }
-            catch
-            {
-                return new List<string>();
-            }
+            return urlList.OrderBy(x => x.Length).ToList();
         }
 
         private string SelectHttp(string url) => url.Contains("http://") ? "http://" : "https://";

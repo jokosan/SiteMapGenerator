@@ -19,7 +19,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             _linkCheck = linkCheck;
         }
 
-        public List<UrlResult> SpeedPageUploads(List<string> url, int? IdUrl = null)
+        public List<UrlResult> SpeedPageUploads(List<string> url)
         {
             var resultSiteMapList = new List<UrlResult>();
 
@@ -46,7 +46,6 @@ namespace SiteMapGenerator.Bll.BusinessLogic
                 }
                 catch
                 {
-                    resultSiteMapList.Add(CreateJoinResultBll(item, 404)); ///??
                 }
             }
 
@@ -75,7 +74,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             if (sw != null)
             {
                 resultJoinResult.WebsiteLoadingSpeed = sw.ElapsedTicks;
-                resultJoinResult.Elapsed = sw.Elapsed;
+                resultJoinResult.Elapsed = Convert.ToInt32(sw.Elapsed);
             }
 
             return resultJoinResult;
