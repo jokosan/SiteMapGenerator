@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SiteMapGenerator.Test.ConsoleSiteMapGenerator
+﻿namespace SiteMapGenerator.Test.ConsoleSiteMapGenerator
 {
     public class ConsoleSiteMapGeneratorTest
     {

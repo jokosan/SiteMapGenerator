@@ -41,12 +41,12 @@ namespace SiteMapGenerator.Bll.BusinessLogic
 
                         TimeSpan timeToLoad = sw.Elapsed;
 
-                        resultSiteMapList.Add(createJoinResultBll(item, rescode, sw));
+                        resultSiteMapList.Add(CreateJoinResultBll(item, rescode, sw));
                     }
                 }
                 catch
                 {
-                    resultSiteMapList.Add(createJoinResultBll(item, 404));
+                    resultSiteMapList.Add(CreateJoinResultBll(item, 404)); ///??
                 }
             }
 
@@ -64,7 +64,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             return req;
         }
 
-        private JoinResultBll createJoinResultBll(string url, int rescode, Stopwatch sw = null)
+        private JoinResultBll CreateJoinResultBll(string url, int rescode, Stopwatch sw = null)
         {
             var resultJoinResult = new JoinResultBll();
 
