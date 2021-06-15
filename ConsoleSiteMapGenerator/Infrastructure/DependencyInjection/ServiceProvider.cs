@@ -5,7 +5,7 @@ using SiteMapGenerator.Bll.BusinessLogic;
 using SiteMapGenerator.Bll.BusinessLogic.Contract;
 using SiteMapGenerator.Bll.Infrastructure.DependencyInjection;
 
-namespace ConsoleSiteMapGenerator
+namespace ConsoleSiteMapGenerator.Infrastructure.DependencyInjection
 {
     public class ServiceProvider
     {

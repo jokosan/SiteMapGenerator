@@ -1,4 +1,5 @@
-﻿using ConsoleSiteMapGenerator.Infrastructure;
+﻿using ConsoleSiteMapGenerator.Infrastructure.DependencyInjection;
+using ConsoleSiteMapGenerator.Infrastructure;
 using SiteMapGenerator.Bll.BusinessLogic;
 using System;
 

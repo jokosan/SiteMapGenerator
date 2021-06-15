@@ -36,7 +36,7 @@ namespace ConsoleSiteMapGenerator
             PrintResult(_loadingSiteAddresses.Loading(userUrl, 10));
         }
 
-        public void PrintResult(IEnumerable<UrlResult> resultUrl)
+        private void PrintResult(IEnumerable<UrlResult> resultUrl)
         {
             var statusCode = resultUrl.Where(x => x.StatusCode == 200);
 
