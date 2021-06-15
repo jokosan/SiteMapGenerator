@@ -14,7 +14,7 @@ namespace ConsoleSiteMapGenerator
             var loadingPageUrls = new LoadingPageUrls(linkCheck);
             var websiteLoadingSpeed = new WebsiteLoadingSpeed(linkCheck);
 
-            new StartProgram(new UserInteraction(), new LoadingSiteAddressesConsole(linkCheck, loadingPageUrls, websiteLoadingSpeed)).Start();
+            new StartProgram(new UserInteraction(), new GeneratingSitemap(linkCheck, loadingPageUrls, websiteLoadingSpeed)).Start();
 
             Console.ReadLine();
         }

@@ -32,10 +32,10 @@ namespace ConsoleSiteMapGenerator
             }
 
             _userInteraction.Info(MessageUsers.WaitingMessage);
-            PrintResult(_loadingSiteAddresses.Loading(userUrl, 50));
+            PrintResult(_loadingSiteAddresses.Loading(userUrl, 10));
         }
 
-        public void PrintResult(IEnumerable<JoinResultBll> resultUrl)
+        public void PrintResult(IEnumerable<UrlResult> resultUrl)
         {
             var statusCode = resultUrl.Where(x => x.StatusCode == 200);
 

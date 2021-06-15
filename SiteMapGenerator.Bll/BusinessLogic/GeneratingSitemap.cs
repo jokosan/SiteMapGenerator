@@ -3,15 +3,15 @@ using SiteMapGenerator.Bll.Models.Bll;
 using SiteMapGenerator.Bll.Services.Contract;
 using System.Collections.Generic;
 
-namespace ConsoleSiteMapGenerator.Infrastructure
+namespace SiteMapGenerator.Bll.BusinessLogic
 {
-    public class LoadingSiteAddressesConsole : IGeneratingSitemap
+    public class GeneratingSitemap : IGeneratingSitemap
     {
         private readonly ILinkCheck _linkCheck;
         private readonly ILoadingPageUrls _loadingPageUrls;
         private readonly IWebsiteLoadingSpeed _websiteLoadingSpeed;
 
-        public LoadingSiteAddressesConsole(
+        public GeneratingSitemap(
             ILinkCheck linkCheck,
             ILoadingPageUrls loadingPageUrls,
             IWebsiteLoadingSpeed websiteLoadingSpeed)
@@ -21,7 +21,7 @@ namespace ConsoleSiteMapGenerator.Infrastructure
             _websiteLoadingSpeed = websiteLoadingSpeed;
         }
 
-        public List<JoinResultBll> Loading(string url, int numberOfLinks)
+        public List<UrlResult> Loading(string url, int numberOfLinks)
             => _websiteLoadingSpeed.SpeedPageUploads(_loadingPageUrls.ExtractHref(url, numberOfLinks));
 
         public bool ValidationAddresses(string url)

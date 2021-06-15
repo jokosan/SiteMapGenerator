@@ -5,7 +5,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic.Contract
 {
     public interface IGeneratingSitemap
     {
-        List<JoinResultBll> Loading(string url, int numberOfLinks);
+        List<UrlResult> Loading(string url, int numberOfLinks);
         bool ValidationAddresses(string url);
     }
 }

@@ -19,9 +19,9 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             _linkCheck = linkCheck;
         }
 
-        public List<JoinResultBll> SpeedPageUploads(List<string> url, int? IdUrl = null)
+        public List<UrlResult> SpeedPageUploads(List<string> url, int? IdUrl = null)
         {
-            var resultSiteMapList = new List<JoinResultBll>();
+            var resultSiteMapList = new List<UrlResult>();
 
             foreach (var item in url)
             {
@@ -64,9 +64,9 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             return req;
         }
 
-        private JoinResultBll CreateJoinResultBll(string url, int rescode, Stopwatch sw = null)
+        private UrlResult CreateJoinResultBll(string url, int rescode, Stopwatch sw = null)
         {
-            var resultJoinResult = new JoinResultBll();
+            var resultJoinResult = new UrlResult();
 
             resultJoinResult.NameSite = url;
             resultJoinResult.StatusCode = rescode;

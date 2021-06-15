@@ -5,6 +5,6 @@ namespace SiteMapGenerator.Bll.Services.Contract
 {
     public interface IWebsiteLoadingSpeed
     {
-        List<JoinResultBll> SpeedPageUploads(List<string> url, int? idUrl = null);
+        List<UrlResult> SpeedPageUploads(List<string> url, int? idUrl = null);
     }
 }

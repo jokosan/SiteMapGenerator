@@ -2,7 +2,7 @@
 
 namespace SiteMapGenerator.Bll.Models.Bll
 {
-    public class JoinResultBll
+    public class UrlResult
     {
         public int IdSitemap { get; set; }
         public int? ArchiveOfRequestsId { get; set; }

@@ -11,8 +11,6 @@ namespace SiteMapGenerator.Bll.Infrastructure.DependencyInjection
         {
             services.AddScoped<ILinkCheck, LinkCheck>();
             services.AddScoped<ILoadingPageUrls, LoadingPageUrls>();
-            services.AddScoped<ILoadingSiteAddresses, LoadingSiteAddresses>();
-            services.AddScoped<IOutput, Output>();
             services.AddScoped<IWebsiteLoadingSpeed, WebsiteLoadingSpeed>();
         }
     }
