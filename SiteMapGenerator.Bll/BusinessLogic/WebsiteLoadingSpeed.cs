@@ -74,7 +74,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             if (sw != null)
             {
                 resultJoinResult.WebsiteLoadingSpeed = sw.ElapsedTicks;
-                resultJoinResult.Elapsed = Convert.ToInt32(sw.Elapsed);
+                resultJoinResult.Elapsed = sw.Elapsed.Seconds;
             }
 
             return resultJoinResult;
