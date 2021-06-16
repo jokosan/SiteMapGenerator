@@ -1,16 +1,15 @@
 ﻿using Moq;
 using SiteMapGenerator.Bll.BusinessLogic;
-using SiteMapGenerator.Bll.BusinessLogic.Contract;
 using Xunit;
 
 namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
 {
     public class LinkValidatorTests
     {
-        private Mock<ILinkValidator> LinkCheckUrlMock = new Mock<ILinkValidator>();
+        private Mock<LinkValidator> LinkCheckUrlMock = new Mock<LinkValidator>();
 
         [Fact]
-        public void UrlValidation_CheckingUserUrl_ResultTrue()
+        public void UrlValidation_CorrectLink_ReturnTrue()
         {
             // Arrange      
             string url = "http://microsoft.com/";
@@ -28,7 +27,7 @@ namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
         }
 
         [Fact]
-        public void UrlValidation_CheckingUserUrl_ResultFalse()
+        public void UrlValidation_InvalidUrl_ReturnFalse()
         {
             // Arrange      
             string url = "microsoft.com";
@@ -46,7 +45,7 @@ namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
         }
 
         [Fact]
-        public void AddressHost_CheckingHostAvailability_ReturnStringUrl()
+        public void AddressHostValidator_CorrectLink_ReturnStringUrl()
         {
             // Arrange
             string url = "http://microsoft.com/";

@@ -1,20 +1,18 @@
-﻿using SiteMapGenerator.Bll.BusinessLogic.Contract;
-using SiteMapGenerator.Bll.Models.Bll;
-using SiteMapGenerator.Bll.Services.Contract;
+﻿using SiteMapGenerator.Bll.Models;
 using System.Collections.Generic;
 
 namespace SiteMapGenerator.Bll.BusinessLogic
 {
-    public class GeneratingSitemap : IGeneratingSitemap
+    public class GeneratingSitemap
     {
-        private readonly ILinkValidator _linkCheck;
-        private readonly ILoadingPageUrls _loadingPageUrls;
-        private readonly IWebsiteLoadingSpeed _websiteLoadingSpeed;
+        private readonly LinkValidator _linkCheck;
+        private readonly LoadingPageUrls _loadingPageUrls;
+        private readonly WebsiteLoadingSpeed _websiteLoadingSpeed;
 
         public GeneratingSitemap(
-            ILinkValidator linkCheck,
-            ILoadingPageUrls loadingPageUrls,
-            IWebsiteLoadingSpeed websiteLoadingSpeed)
+            LinkValidator linkCheck,
+            LoadingPageUrls loadingPageUrls,
+            WebsiteLoadingSpeed websiteLoadingSpeed)
         {
             _linkCheck = linkCheck;
             _loadingPageUrls = loadingPageUrls;

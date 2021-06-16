@@ -1,16 +1,15 @@
 ﻿using Moq;
-using Xunit;
-using SiteMapGenerator.Bll.Services.Contract;
 using SiteMapGenerator.Bll.BusinessLogic;
-using System.Collections.Generic;
-using SiteMapGenerator.Bll.Models.Bll;
+using SiteMapGenerator.Bll.Models;
 using System;
+using System.Collections.Generic;
+using Xunit;
 
 namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
 {
     public class WebsiteLoadingSpeedTest
     {
-        private Mock<IWebsiteLoadingSpeed> mockWebsiteLoadingSpeed = new Mock<IWebsiteLoadingSpeed>();
+        private Mock<WebsiteLoadingSpeed> mockWebsiteLoadingSpeed = new Mock<WebsiteLoadingSpeed>();
 
         [Fact]
         public void SpeedPageUploads_()
@@ -23,7 +22,7 @@ namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
             {
                 new UrlResult { NameSite = sitMapList[0], StatusCode = 200,  PageTestDate = DateTime.Now,  Elapsed = 12541}
             };
-                        
+
             mockWebsiteLoadingSpeed.SetupSequence(x => x.SpeedPageUploads(It.IsAny<List<string>>()))
                 .Returns(listResult);
 

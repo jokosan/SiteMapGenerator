@@ -1,12 +1,10 @@
-﻿using SiteMapGenerator.Bll.BusinessLogic.Contract;
-using System;
+﻿using System;
 
 namespace SiteMapGenerator.Bll.BusinessLogic
 {
-    public class LinkValidator : ILinkValidator
+    public class LinkValidator
     {
-        
-        public string AddressHostValidator(string address)
+        public virtual string AddressHostValidator(string address)
         {
             if (address.Contains("http"))
             {
@@ -20,7 +18,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             }
         }
 
-        public bool UrlValidation(string address)
+        public virtual bool UrlValidation(string address)
         {
             Uri uriResult;
             return Uri.TryCreate(address, UriKind.Absolute, out uriResult)

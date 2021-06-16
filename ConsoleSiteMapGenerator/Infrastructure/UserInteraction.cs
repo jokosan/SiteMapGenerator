@@ -1,16 +1,15 @@
-﻿using ConsoleSiteMapGenerator.Infrastructure.Contract;
-using System;
+﻿using System;
 
 namespace ConsoleSiteMapGenerator.Infrastructure
 {
-    public class UserInteraction : IUserInteraction
+    public class UserInteraction
     {
-        public void Info(string message)
+        public virtual void Info(string message)
         {
             Console.WriteLine(message);
         }
 
-        public string UserValueInput()
+        public virtual string UserValueInput()
             => Console.ReadLine();
     }
 }

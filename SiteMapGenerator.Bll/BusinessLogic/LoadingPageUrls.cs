@@ -1,23 +1,21 @@
 ﻿using HtmlAgilityPack;
-using SiteMapGenerator.Bll.BusinessLogic.Contract;
-using SiteMapGenerator.Bll.Services.Contract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace SiteMapGenerator.Bll.BusinessLogic
 {
-    public class LoadingPageUrls : ILoadingPageUrls
+    public class LoadingPageUrls
     {
-        private readonly ILinkValidator _linkCheck;
+        private readonly LinkValidator _linkCheck;
 
         public LoadingPageUrls(
-            ILinkValidator linkCheck)
+            LinkValidator linkCheck)
         {
             _linkCheck = linkCheck;
         }
 
-        public List<string> ExtractHref(string URL, int countLink)
+        public virtual List<string> ExtractHref(string URL, int countLink)
         {
             var linksResult = SearchForLinks(URL, HtmlParser(URL));
             int i = 0;
@@ -52,8 +50,8 @@ namespace SiteMapGenerator.Bll.BusinessLogic
         {
             var doc = new HtmlWeb().Load(urlName);
             var linkTags = doc.DocumentNode.Descendants("link");
-            
-            return  doc.DocumentNode.Descendants("a")
+
+            return doc.DocumentNode.Descendants("a")
                                     .Select(a => a.GetAttributeValue("href", null))
                                     .Where(u => !String.IsNullOrEmpty(u));
         }

@@ -1,6 +1,4 @@
-﻿using SiteMapGenerator.Bll.BusinessLogic.Contract;
-using SiteMapGenerator.Bll.Models.Bll;
-using SiteMapGenerator.Bll.Services.Contract;
+﻿using SiteMapGenerator.Bll.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,18 +6,18 @@ using System.Net;
 
 namespace SiteMapGenerator.Bll.BusinessLogic
 {
-    public class WebsiteLoadingSpeed : IWebsiteLoadingSpeed
+    public class WebsiteLoadingSpeed
     {
-        private readonly ILinkValidator _linkCheck;
+        private readonly LinkValidator _linkCheck;
 
         public WebsiteLoadingSpeed(
-            ILinkValidator linkCheck
+            LinkValidator linkCheck
             )
         {
             _linkCheck = linkCheck;
         }
 
-        public List<UrlResult> SpeedPageUploads(List<string> url)
+        public virtual List<UrlResult> SpeedPageUploads(List<string> url)
         {
             var resultSiteMapList = new List<UrlResult>();
 

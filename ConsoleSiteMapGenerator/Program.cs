@@ -1,5 +1,5 @@
-﻿using ConsoleSiteMapGenerator.Infrastructure.DependencyInjection;
-using ConsoleSiteMapGenerator.Infrastructure;
+﻿using ConsoleSiteMapGenerator.Infrastructure;
+using ConsoleSiteMapGenerator.Infrastructure.Constants;
 using SiteMapGenerator.Bll.BusinessLogic;
 using System;
 
@@ -9,15 +9,25 @@ namespace ConsoleSiteMapGenerator
     {
         static void Main(string[] args)
         {
-            ServiceProvider.RegisterServices();
-
-            var linkCheck = new LinkValidator();
-            var loadingPageUrls = new LoadingPageUrls(linkCheck);
-            var websiteLoadingSpeed = new WebsiteLoadingSpeed(linkCheck);
+            var linkValidator = new LinkValidator();
+            var loadingPageUrls = new LoadingPageUrls(linkValidator);
+            var websiteLoadingSpeed = new WebsiteLoadingSpeed(linkValidator);
             var userInteraction = new UserInteraction();
-            var generatingSitemap = new GeneratingSitemap(linkCheck, loadingPageUrls, websiteLoadingSpeed);
+            var generatingSitemap = new GeneratingSitemap(linkValidator, loadingPageUrls, websiteLoadingSpeed);
+            var printResult = new PrintResult(userInteraction);
 
-            new StartProgram(userInteraction, generatingSitemap).Start();
+            userInteraction.Info(MessageUsers.Start);
+            string userUrl = userInteraction.UserValueInput();
+
+            if (generatingSitemap.ValidationAddresses(userUrl))
+            {
+                userInteraction.Info(MessageUsers.Waiting);
+                printResult.SiteMapPrint(generatingSitemap.Loading(userUrl, 10));
+            }
+            else
+            {
+                userInteraction.Info(MessageUsers.IncorrectUrl);
+            }
 
             Console.ReadLine();
         }
