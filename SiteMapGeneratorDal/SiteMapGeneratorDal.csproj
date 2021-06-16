@@ -20,4 +20,13 @@
     <PackageReference Include="UkadGroup.IRepository" Version="1.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ConsoleSiteMapGenerator\ConsoleSiteMapGenerator.csproj" />
+    <ProjectReference Include="..\SiteMapGenerator.Bll\SiteMapGenerator.Bll.csproj" />
+  </ItemGroup>
+
 </Project>

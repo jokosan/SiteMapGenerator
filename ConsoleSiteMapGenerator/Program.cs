@@ -27,6 +27,8 @@ namespace ConsoleSiteMapGenerator
             else
             {
                 userInteraction.Info(MessageUsers.IncorrectUrl);
+                
+                Environment.Exit(0);
             }
 
             Console.ReadLine();
