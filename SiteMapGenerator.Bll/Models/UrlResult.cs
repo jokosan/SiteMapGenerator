@@ -11,5 +11,7 @@ namespace SiteMapGenerator.Bll.Models
         public int? StatusCode { get; set; }
         public DateTime? PageTestDate { get; set; }
         public int? Elapsed { get; set; }
+        public int? ElapsedMin { get; set; }
+        public int? ElapsedMax { get; set; }
     }
 }

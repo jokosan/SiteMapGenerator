@@ -1,13 +1,25 @@
 ﻿using ConsoleSiteMapGenerator.Infrastructure;
 using ConsoleSiteMapGenerator.Infrastructure.Constants;
 using SiteMapGenerator.Bll.BusinessLogic;
+using SiteMapGenerator.Dal.Serveses;
 using System;
 
-namespace ConsoleSiteMapGenerator
+namespace SiteMapGenerator.Dal
 {
-    class Program
+    public class StartConsole
     {
-        static void Main(string[] args)
+        private readonly SaveDbSiteMap _saveDbSiteMap;
+        private readonly GetFromDatabase _getFromDatabase;
+
+        public StartConsole(
+            SaveDbSiteMap saveDbSiteMap,
+            GetFromDatabase getFromDatabase)
+        {
+            _saveDbSiteMap = saveDbSiteMap;
+            _getFromDatabase = getFromDatabase;
+        }
+
+        public void StartMain()
         {
             var linkValidator = new LinkValidator();
             var loadingPageUrls = new LoadingPageUrls(linkValidator);
@@ -22,7 +34,9 @@ namespace ConsoleSiteMapGenerator
             if (generatingSitemap.ValidationAddresses(userUrl))
             {
                 userInteraction.Info(MessageUsers.Waiting);
-                printResult.SiteMapPrint(generatingSitemap.Loading(userUrl, 10));
+                var idArxiv = _saveDbSiteMap.SaveUserRequest(userUrl);
+                _saveDbSiteMap.Save(generatingSitemap.Loading(userUrl, 10), _getFromDatabase.GetSiteMap(), idArxiv);
+                printResult.SiteMapPrint(_getFromDatabase.JoinTableGroup(_getFromDatabase.JoinTableUrlSiteMapToPageInfo(idArxiv)));
             }
             else
             {
