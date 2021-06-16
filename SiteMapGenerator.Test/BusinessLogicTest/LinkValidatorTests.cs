@@ -5,9 +5,9 @@ using Xunit;
 
 namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
 {
-    public class LinkCheckTests
+    public class LinkValidatorTests
     {
-        private Mock<ILinkCheck> LinkCheckUrlMock = new Mock<ILinkCheck>();
+        private Mock<ILinkValidator> LinkCheckUrlMock = new Mock<ILinkValidator>();
 
         [Fact]
         public void UrlValidation_CheckingUserUrl_ResultTrue()
@@ -15,7 +15,7 @@ namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
             // Arrange      
             string url = "http://microsoft.com/";
             var resultUrlValidation = true;
-            var linkCheck = new LinkCheck();
+            var linkCheck = new LinkValidator();
 
             //  Act
             LinkCheckUrlMock.SetupSequence(p => p.UrlValidation(url))
@@ -33,7 +33,7 @@ namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
             // Arrange      
             string url = "microsoft.com";
             var resultUrlValidation = false;
-            var linkCheck = new LinkCheck();
+            var linkCheck = new LinkValidator();
 
             //  Act
             LinkCheckUrlMock.SetupSequence(p => p.UrlValidation(url))
@@ -50,11 +50,11 @@ namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
         {
             // Arrange
             string url = "http://microsoft.com/";
-            var linkCheck = new LinkCheck();
+            var linkCheck = new LinkValidator();
 
             // Act
-            LinkCheckUrlMock.SetupSequence(p => p.AddressHost(url));
-            var urlResult = linkCheck.AddressHost(url);
+            LinkCheckUrlMock.SetupSequence(p => p.AddressHostValidator(url));
+            var urlResult = linkCheck.AddressHostValidator(url);
 
             // Assert
             Assert.Equal("http://microsoft.com", urlResult);

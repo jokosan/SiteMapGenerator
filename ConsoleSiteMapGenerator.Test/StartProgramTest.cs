@@ -29,7 +29,7 @@ namespace ConsoleSiteMapGenerator.Test
             startConsole.Start();
 
             // Asert
-            mockUserInteraction.Verify(x => x.Info(MessageUsers.MessageStart));
+            mockUserInteraction.Verify(x => x.Info(MessageUsers.Start));
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace ConsoleSiteMapGenerator.Test
             startConsole.Start();
 
             // Asert
-            mockUserInteraction.Verify(x => x.Info(MessageUsers.MessageIncorrectUrl));
+            mockUserInteraction.Verify(x => x.Info(MessageUsers.IncorrectUrl));
         }
 
         [Fact]

@@ -1,8 +1,8 @@
 ﻿namespace SiteMapGenerator.Bll.BusinessLogic.Contract
 {
-    public interface ILinkCheck
+    public interface ILinkValidator
     {
-        string AddressHost(string address);
+        string AddressHostValidator(string address);
         bool UrlValidation(string address);
     }
 }

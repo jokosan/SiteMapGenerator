@@ -16,7 +16,7 @@ namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
         public void SpeedPageUploads_()
         {
             // Arrange
-            var websiteLoadingSpeed = new WebsiteLoadingSpeed(new LinkCheck());
+            var websiteLoadingSpeed = new WebsiteLoadingSpeed(new LinkValidator());
             var sitMapList = new List<string>() { "https://www.example.com/", "https://www.example.com/1/", "https://www.example.com/2/" };
 
             var listResult = new List<UrlResult>()

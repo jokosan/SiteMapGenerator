@@ -10,10 +10,10 @@ namespace SiteMapGenerator.Bll.BusinessLogic
 {
     public class WebsiteLoadingSpeed : IWebsiteLoadingSpeed
     {
-        private readonly ILinkCheck _linkCheck;
+        private readonly ILinkValidator _linkCheck;
 
         public WebsiteLoadingSpeed(
-            ILinkCheck linkCheck
+            ILinkValidator linkCheck
             )
         {
             _linkCheck = linkCheck;

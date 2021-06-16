@@ -3,9 +3,10 @@ using System;
 
 namespace SiteMapGenerator.Bll.BusinessLogic
 {
-    public class LinkCheck : ILinkCheck
+    public class LinkValidator : ILinkValidator
     {
-        public string AddressHost(string address)
+        
+        public string AddressHostValidator(string address)
         {
             if (address.Contains("http"))
             {

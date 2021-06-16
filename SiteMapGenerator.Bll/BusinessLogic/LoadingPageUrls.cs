@@ -9,10 +9,10 @@ namespace SiteMapGenerator.Bll.BusinessLogic
 {
     public class LoadingPageUrls : ILoadingPageUrls
     {
-        private readonly ILinkCheck _linkCheck;
+        private readonly ILinkValidator _linkCheck;
 
         public LoadingPageUrls(
-            ILinkCheck linkCheck)
+            ILinkValidator linkCheck)
         {
             _linkCheck = linkCheck;
         }

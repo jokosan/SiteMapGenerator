@@ -7,12 +7,12 @@ namespace SiteMapGenerator.Bll.BusinessLogic
 {
     public class GeneratingSitemap : IGeneratingSitemap
     {
-        private readonly ILinkCheck _linkCheck;
+        private readonly ILinkValidator _linkCheck;
         private readonly ILoadingPageUrls _loadingPageUrls;
         private readonly IWebsiteLoadingSpeed _websiteLoadingSpeed;
 
         public GeneratingSitemap(
-            ILinkCheck linkCheck,
+            ILinkValidator linkCheck,
             ILoadingPageUrls loadingPageUrls,
             IWebsiteLoadingSpeed websiteLoadingSpeed)
         {

@@ -9,7 +9,7 @@ namespace SiteMapGenerator.Bll.Infrastructure.DependencyInjection
     {
         public static void Initialize(IServiceCollection services)
         {
-            services.AddScoped<ILinkCheck, LinkCheck>();
+            services.AddScoped<ILinkValidator, LinkValidator>();
             services.AddScoped<ILoadingPageUrls, LoadingPageUrls>();
             services.AddScoped<IWebsiteLoadingSpeed, WebsiteLoadingSpeed>();
         }

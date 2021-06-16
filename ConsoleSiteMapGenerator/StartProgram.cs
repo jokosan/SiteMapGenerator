@@ -22,17 +22,17 @@ namespace ConsoleSiteMapGenerator
 
         public void Start()
         {
-            _userInteraction.Info(MessageUsers.MessageStart);
+            _userInteraction.Info(MessageUsers.Start);
             string userUrl = _userInteraction.UserValueInput();
 
             if (!_loadingSiteAddresses.ValidationAddresses(userUrl))
             {
-                _userInteraction.Info(MessageUsers.MessageIncorrectUrl);
+                _userInteraction.Info(MessageUsers.IncorrectUrl);
 
                 return;
             }
 
-            _userInteraction.Info(MessageUsers.WaitingMessage);
+            _userInteraction.Info(MessageUsers.Waiting);
             PrintResult(_loadingSiteAddresses.Loading(userUrl, 10));
         }
 
