@@ -1,0 +1,53 @@
+﻿@model IEnumerable<SiteMapGenerator.Bll.Models.UrlResult>
+
+@{
+    ViewBag.Title = "ArxivDetails";
+}
+@using NonFactors.Mvc.Grid
+<link href="~/Content/mvc-grid/mvc-grid.css" rel="stylesheet" />
+
+<h2 class="text-center">ArxivDetails</h2>
+<hr />
+<div class="text-center mb-5 mt-5">
+    @if (ViewBag.DateGroup != null)
+    {
+        foreach (var item in ViewBag.DateGroup)
+        {
+            <a class="btn btn-outline-dark" href=@Url.Action("ArxivDetails", new {date = @item.Key, id = @ViewBag.IdOrder })> @item.Key.ToString("dd.MM.yyyy") </a>
+        }
+    }
+
+</div>
+
+<div class="table-responsive">
+    <div class="table-responsive">
+        @(Html
+                       .Grid(Model)
+                       .Build(columns =>
+                       {
+                           columns.Add(model => model.NameSite);
+                           columns.Add(model => model.StatusCode);
+                           columns.Add(model => model.Elapsed);
+                       })
+                       .Using(GridFilterMode.Excel)
+                       .Empty("No data found")
+                       .Filterable()
+                       .Sortable()
+                       .Pageable(pager =>
+                       {
+                           pager.PageSizes = new Dictionary<int, string> { { 10, "10" }, { 25, "25" }, { 50, "50" } };
+                           pager.ShowPageSizes = true;
+                           pager.RowsPerPage = 1;
+                       })
+
+                    )
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<script src="~/js/mvc-grid.js"></script>
+<script>
+    document.querySelectorAll(".mvc-grid").forEach(element => new MvcGrid(element));
+</script>
+<script src="~/js/site.js"></script>
