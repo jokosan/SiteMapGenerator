@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SiteMapGenerator.Dal.Serveses;
 using SiteMapGenerator.Dal.Utilities;
 
 namespace SiteMapGenerator.Dal
@@ -20,10 +19,7 @@ namespace SiteMapGenerator.Dal
                .ConfigureServices((hostContext, services) =>
                {
                    DbContextServiceCollectionDal.Initialize(services);
-
-                   services.AddScoped<StartConsole>();
-                   services.AddScoped<GetFromDatabase>();
-                   services.AddScoped<SaveDbSiteMap>();
+                   ServisesDi.Initialize(services);
                });
     }
 }
