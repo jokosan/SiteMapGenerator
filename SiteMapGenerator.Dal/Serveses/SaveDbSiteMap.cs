@@ -51,7 +51,7 @@ namespace SiteMapGenerator.Dal.Serveses
             }
         }
 
-        public int SaveUserRequest(string url)
+        public virtual int SaveUserRequest(string url)
         {
             var resultArxiv = _repositoryArchiveOfRequest.GetAll();
 

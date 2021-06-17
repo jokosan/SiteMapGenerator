@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using SiteMapGenerator.Dal.Utilities;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using SiteMapGenerator.Dal.Serveses;
+using SiteMapGenerator.Dal.Utilities;
 
 namespace SiteMapGenerator.Dal
 {

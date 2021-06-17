@@ -1,6 +1,5 @@
 ﻿using SiteMapGenerator.Bll.Models;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ConsoleSiteMapGenerator.Infrastructure
 {
@@ -17,7 +16,7 @@ namespace ConsoleSiteMapGenerator.Infrastructure
         {
             foreach (var item in resultUrl)
             {
-                _userInteraction.Info($"Url {item.NameSite} | LoadingSpeed  {item.WebsiteLoadingSpeed}");
+                _userInteraction.Info($"Url {item.NameSite} | LoadingSpeed  {item.Elapsed}");
             }
         }
     }
