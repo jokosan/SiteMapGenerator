@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SiteMapGenerator.Bll.Test",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleSiteMapGenerator", "ConsoleSiteMapGenerator\ConsoleSiteMapGenerator.csproj", "{C0EAED7E-D84A-48F5-B361-1930DA6DB753}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SiteMapGenerator.Dal", "SiteMapGenerator.Dal\SiteMapGenerator.Dal.csproj", "{4AFD4571-C82C-4313-9B21-8E5D4BA5F10B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{C0EAED7E-D84A-48F5-B361-1930DA6DB753}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0EAED7E-D84A-48F5-B361-1930DA6DB753}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0EAED7E-D84A-48F5-B361-1930DA6DB753}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AFD4571-C82C-4313-9B21-8E5D4BA5F10B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AFD4571-C82C-4313-9B21-8E5D4BA5F10B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AFD4571-C82C-4313-9B21-8E5D4BA5F10B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AFD4571-C82C-4313-9B21-8E5D4BA5F10B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
