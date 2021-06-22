@@ -14,7 +14,8 @@ namespace ConsoleSiteMapGenerator.Infrastructure
 
         public void SiteMapPrint(IEnumerable<UrlResult> resultUrl)
         {
-            foreach (var item in resultUrl)
+            var statusCode = resultUrl.Where(x => x.StatusCode == 200); /// ??
+            foreach (var item in statusCode)
             {
                 _userInteraction.Info($"Url {item.NameSite} | LoadingSpeed  {item.Elapsed}");
             }

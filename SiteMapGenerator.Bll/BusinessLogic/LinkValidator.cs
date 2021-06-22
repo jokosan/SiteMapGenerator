@@ -4,7 +4,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
 {
     public class LinkValidator
     {
-        public virtual string AddressHostValidator(string address)
+        public virtual string GetHost(string address) // ??? 
         {
             if (address.Contains("http"))
             {
@@ -14,15 +14,15 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             }
             else
             {
-                return "";
+                return string.Empty;
             }
         }
 
-        public virtual bool UrlValidation(string address)
+        public virtual bool CheckURLValid(string address)
         {
             Uri uriResult;
             return Uri.TryCreate(address, UriKind.Absolute, out uriResult)
                 && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
-        }
+        }      
     }
 }
