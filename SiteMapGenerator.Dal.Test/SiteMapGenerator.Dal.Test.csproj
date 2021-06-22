@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ConsoleSiteMapGenerator\ConsoleSiteMapGenerator.csproj" />
     <ProjectReference Include="..\SiteMapGenerator.Bll\SiteMapGenerator.Bll.csproj" />
     <ProjectReference Include="..\SiteMapGenerator.Dal\SiteMapGenerator.Dal.csproj" />
   </ItemGroup>

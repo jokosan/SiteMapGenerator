@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ConsoleSiteMapGenerator\ConsoleSiteMapGenerator.csproj" />
     <ProjectReference Include="..\SiteMapGenerator.Bll\SiteMapGenerator.Bll.csproj" />
   </ItemGroup>
 
