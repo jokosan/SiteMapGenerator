@@ -1,26 +1,27 @@
-﻿using HtmlAgilityPack;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace SiteMapGenerator.Bll.BusinessLogic
 {
     public class LoadingPageUrls
     {
-        private readonly LinkValidator _linkCheck;
+        private readonly LinkValidator _linkValidator;
+        private readonly Parser _parser;
 
         public LoadingPageUrls(
-            LinkValidator linkCheck)
+            LinkValidator linkValidator,
+            Parser parser)
         {
-            _linkCheck = linkCheck;
+            _linkValidator = linkValidator;
+            _parser = parser;
         }
 
         public virtual List<string> ExtractHref(string URL, int countLink)
         {
-            var linksResult = SearchForLinks(URL, HtmlParser(URL));
+            var linksResult = AnalyzeUrl(URL, _parser.HtmlParser(URL), URL);
             int i = 0;
 
-            do
+            while (countLink >= linksResult.Count())
             {
                 int indexList = 1 + i;
 
@@ -29,64 +30,36 @@ namespace SiteMapGenerator.Bll.BusinessLogic
 
                 string selectUriList = linksResult[indexList];
 
-                if (_linkCheck.UrlValidation(selectUriList))
+                if (_linkValidator.CheckURLValid(selectUriList))
                 {
-                    var resultHtmlParser = HtmlParser(selectUriList);
-                    linksResult.AddRange(SearchForLinks(selectUriList, resultHtmlParser));
+                    var resultHtmlParser = _parser.HtmlParser(selectUriList);
+                    linksResult.AddRange(AnalyzeUrl(selectUriList, resultHtmlParser, URL));
+                    linksResult.Distinct();
                 }
                 else
                 {
                     linksResult.RemoveAt(indexList);
                 }
-
-            } while (countLink >= linksResult.Count());
-
-            var result = linksResult.Distinct().ToList();
+            }
 
             return linksResult.OrderBy(x => x.Length).ToList();
         }
 
-        private IEnumerable<string> HtmlParser(string urlName)
-        {
-            var doc = new HtmlWeb().Load(urlName);
-            var linkTags = doc.DocumentNode.Descendants("link");
-
-            return doc.DocumentNode.Descendants("a")
-                                    .Select(a => a.GetAttributeValue("href", null))
-                                    .Where(u => !String.IsNullOrEmpty(u));
-        }
-
-        private List<string> SearchForLinks(string url, IEnumerable<string> linkedPages)
+        private List<string> AnalyzeUrl(string url, IEnumerable<string> linkedPages, string urlConst)
         {
             var urlList = new List<string> { url };
 
-            string http = SelectHttp(url);
-
-            string urls = url.Replace(http, string.Empty);
-            string result = urls.Trim(new char[] { '/', ':' });
-
             foreach (var item in linkedPages)
             {
-                if (urlList.Any(x => x.Contains(item)) == false)
+                string absolut = _parser.GetAbsoluteUrlString(urlConst, item);
+
+                if (!urlList.Any(x => x.Contains(absolut)) && absolut.Contains(urlConst))
                 {
-                    if (item.Contains(url))
-                    {
-                        urlList.Add(item);
-                    }
-                    else if (item.Contains(result) && item.Contains("//"))
-                    {
-                        urlList.Add($"{http}{item.Replace("//", string.Empty)}");
-                    }
-                    else if (item.StartsWith("http://") == false && item.StartsWith("https://") == false)
-                    {
-                        urlList.Add(url + item.TrimStart(new char[] { '/' }));
-                    }
+                    urlList.Add(absolut);
                 }
             }
 
             return urlList.OrderBy(x => x.Length).ToList();
         }
-
-        private string SelectHttp(string url) => url.Contains("http://") ? "http://" : "https://";
     }
 }
