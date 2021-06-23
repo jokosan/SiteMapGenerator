@@ -45,6 +45,8 @@ namespace SiteMapGenerator.Dal.Serveses
                 pageInfo.StatusCode = itemUrl.StatusCode;
                 pageInfo.PageTestDate = DateTime.Now;
                 pageInfo.Elapsed = itemUrl.Elapsed;
+                pageInfo.parseLink = itemUrl.parseLink;
+                pageInfo.sitemapLink = itemUrl.sitemapLink;
 
                 _repositoryPageInfo.Add(pageInfo);
                 _repositoryPageInfo.SaveChanges();
