@@ -16,7 +16,7 @@ namespace ConsoleSiteMapGenerator.Infrastructure
         {
             foreach (var item in resultUrl)
             {
-                _userInteraction.Info($"Url {item.NameSite} | LoadingSpeed  {item.Elapsed}");
+                _userInteraction.Info($"Url {item.NameSite} | LoadingSpeed  {item.Elapsed} | parseLink {item.parseLink} | sitmapLink {item.sitemapLink}");
             }
         }
     }

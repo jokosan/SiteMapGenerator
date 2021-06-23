@@ -23,12 +23,12 @@ namespace ConsoleSiteMapGenerator.Infrastructure
             {
                 userInteraction.Info(MessageUsers.Waiting);
 
-                var parserPages = loadingPageUrls.ExtractHref(userUrl, 200);
-                //var parserSitMapXml = loadingSiteMap.SearchSitemap(userUrl);
+                var parserPages = loadingPageUrls.ExtractHref(userUrl);
+                var parserSitMapXml = loadingSiteMap.SearchSitemap(userUrl);
 
-              //  userInteraction.Info($"{MessageUsers.numberOfLinks} {MessageUsers.xmlSiteMap} {parserSitMapXml.Count()} {MessageUsers.parserSiteMAp} {parserPages.Count()}");
+                userInteraction.Info($"{MessageUsers.numberOfLinks} {MessageUsers.xmlSiteMap} {parserSitMapXml.Count()} {MessageUsers.parserSiteMAp} {parserPages.Count()}");
 
-                printResult.SiteMapPrint(websiteLoadingSpeed.SpeedPageUploads(parserPages));
+                printResult.SiteMapPrint(websiteLoadingSpeed.SpeedPageUploads(parserPages, parserSitMapXml));
             }
             else
             {
