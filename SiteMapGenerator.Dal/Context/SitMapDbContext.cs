@@ -12,6 +12,7 @@ namespace SiteMapGenerator.Dal.dbContext
         public SitMapDbContext(DbContextOptions options)
             : base(options)
         {
+            Database.Migrate();
         }
 
         public DbSet<ArchiveOfRequest> ArchiveOfRequests { get; set; }

@@ -32,6 +32,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
                         sw.Start();
                         HttpWebResponse res = (HttpWebResponse)req.GetResponse();
                         var rescode = (int)res.StatusCode;
+                        var sc = res.StatusDescription;
                         sw.Stop();
 
                         res.Close();
@@ -54,7 +55,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             req.Method = WebRequestMethods.Http.Get;
             req.AllowAutoRedirect = false;
             req.Accept = @"*/*";
-
+                     
             return req;
         }
 
