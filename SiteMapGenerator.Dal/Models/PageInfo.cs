@@ -12,6 +12,8 @@ namespace SiteMapGenerator.Dal.Models.Dal
         public int? StatusCode { get; set; }
         public DateTime? PageTestDate { get; set; }
         public int? Elapsed { get; set; }
+        public bool parseLink { get; set; }
+        public bool sitemapLink { get; set; }
     }
 }
 

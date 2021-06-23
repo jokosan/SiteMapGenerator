@@ -47,7 +47,9 @@ namespace SiteMapGenerator.Dal.Serveses
                   StatusCode = pageInfo.StatusCode,
                   WebsiteLoadingSpeed = pageInfo.WebsiteLoadingSpeed,
                   PageTestDate = pageInfo.PageTestDate.Value.Date,
-                  Elapsed = pageInfo.Elapsed
+                  Elapsed = pageInfo.Elapsed,
+                  sitemapLink = pageInfo.sitemapLink,
+                  parseLink = pageInfo.parseLink
               });
         }
 
@@ -60,7 +62,9 @@ namespace SiteMapGenerator.Dal.Serveses
                                     ArchiveOfRequestsId = y.First().ArchiveOfRequestsId,
                                     NameSite = y.First().NameSite,
                                     ElapsedMin = y.Min(x => x.Elapsed),
-                                    ElapsedMax = y.Max(x => x.Elapsed)
+                                    ElapsedMax = y.Max(x => x.Elapsed),
+                                    parseLink = y.First().parseLink,
+                                    sitemapLink = y.First().sitemapLink
                                 }).OrderBy(o => o.ElapsedMax);
         }
     }

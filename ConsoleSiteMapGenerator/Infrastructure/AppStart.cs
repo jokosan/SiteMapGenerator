@@ -18,6 +18,7 @@ namespace ConsoleSiteMapGenerator.Infrastructure
             var websiteLoadingSpeed = new WebsiteLoadingSpeed(linkValidator);
             var userInteraction = new UserInteraction();
             var printResult = new PrintResult(userInteraction);
+            var loadingSiteMap = new LoadingSiteMap(parser, linkValidator);
 
             userInteraction.Info(MessageUsers.Start);
             string userUrl = userInteraction.UserValueInput();
@@ -25,7 +26,13 @@ namespace ConsoleSiteMapGenerator.Infrastructure
             if (linkValidator.CheckURLValid(userUrl))
             {
                 userInteraction.Info(MessageUsers.Waiting);
-                printResult.SiteMapPrint(websiteLoadingSpeed.SpeedPageUploads(loadingPageUrls.ExtractHref(userUrl, 100)));
+
+                var parserPages = loadingPageUrls.ExtractHref(userUrl);
+                var parserSitMapXml = loadingSiteMap.SearchSitemap(userUrl);
+
+                userInteraction.Info($"{MessageUsers.numberOfLinks} {MessageUsers.xmlSiteMap} {parserSitMapXml.Count()} {MessageUsers.parserSiteMAp} {parserPages.Count()}");
+
+                printResult.SiteMapPrint(websiteLoadingSpeed.SpeedPageUploads(parserPages, parserSitMapXml));
             }
             else
             {

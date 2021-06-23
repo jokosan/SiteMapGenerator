@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 
 namespace SiteMapGenerator.Bll.BusinessLogic
@@ -16,11 +17,13 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             _linkValidator = linkValidator;
         }
 
-        public virtual List<UrlResult> SpeedPageUploads(List<string> url)
+        public virtual List<UrlResult> SpeedPageUploads(IEnumerable<string> linkParser, IEnumerable<string> linkSitemap)
         {
+            var resultLink = linkParser.Union(linkSitemap).Distinct();
+
             var resultSiteMapList = new List<UrlResult>();
 
-            foreach (var item in url)
+            foreach (var item in resultLink)
             {
                 try
                 {
@@ -32,12 +35,11 @@ namespace SiteMapGenerator.Bll.BusinessLogic
                         sw.Start();
                         HttpWebResponse res = (HttpWebResponse)req.GetResponse();
                         var rescode = (int)res.StatusCode;
-                        var sc = res.StatusDescription;
                         sw.Stop();
 
                         res.Close();
 
-                        resultSiteMapList.Add(CreateJoinResultBll(item, rescode, sw));
+                        resultSiteMapList.Add(CreateJoinResultBll(item, rescode, sw, linkParser.Any(x => x.Contains(item)), linkSitemap.Any(x => x.Contains(item))));
                     }
                 }
                 catch
@@ -59,13 +61,15 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             return req;
         }
 
-        private UrlResult CreateJoinResultBll(string url, int rescode, Stopwatch sw)
+        private UrlResult CreateJoinResultBll(string url, int rescode, Stopwatch sw, bool parser, bool sitmap)
         {
             var resultJoinResult = new UrlResult();
 
             resultJoinResult.NameSite = url;
             resultJoinResult.StatusCode = rescode;
             resultJoinResult.PageTestDate = DateTime.Now;
+            resultJoinResult.parseLink = parser;
+            resultJoinResult.sitemapLink = sitmap;
 
             if (sw != null)
             {

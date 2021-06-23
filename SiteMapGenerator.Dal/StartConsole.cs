@@ -3,6 +3,7 @@ using ConsoleSiteMapGenerator.Infrastructure.Constants;
 using SiteMapGenerator.Bll.BusinessLogic;
 using SiteMapGenerator.Dal.Serveses;
 using System;
+using System.Linq;
 
 namespace SiteMapGenerator.Dal
 {
@@ -22,30 +23,31 @@ namespace SiteMapGenerator.Dal
         public void StartMain()
         {
             var linkValidator = new LinkValidator();
-            var loadingPageUrls = new LoadingPageUrls(linkValidator);
+            var parser = new Parser();
+            var loadingPageUrls = new LoadingPageUrls(linkValidator, parser);
             var websiteLoadingSpeed = new WebsiteLoadingSpeed(linkValidator);
             var userInteraction = new UserInteraction();
-            var generatingSitemap = new GeneratingSitemap(linkValidator, loadingPageUrls, websiteLoadingSpeed);
             var printResult = new PrintResult(userInteraction);
+            var loadingSiteMap = new LoadingSiteMap(parser, linkValidator);
 
             userInteraction.Info(MessageUsers.Start);
             string userUrl = userInteraction.UserValueInput();
 
-            if (generatingSitemap.ValidationAddresses(userUrl))
+            if (linkValidator.CheckURLValid(userUrl))
             {
                 userInteraction.Info(MessageUsers.Waiting);
-                var idArxiv = _saveDbSiteMap.SaveUserRequest(userUrl);
-                _saveDbSiteMap.Save(generatingSitemap.Loading(userUrl, 10), _getFromDatabase.GetSiteMap(), idArxiv);
-                printResult.SiteMapPrint(_getFromDatabase.JoinTableGroup(_getFromDatabase.JoinTableUrlSiteMapToPageInfo(idArxiv)));
+
+                var parserPages = loadingPageUrls.ExtractHref(userUrl);
+                var parserSitMapXml = loadingSiteMap.SearchSitemap(userUrl);
+
+                userInteraction.Info($"{MessageUsers.numberOfLinks} {MessageUsers.xmlSiteMap} {parserSitMapXml.Count()} {MessageUsers.parserSiteMAp} {parserPages.Count()}");
+
+                printResult.SiteMapPrint(websiteLoadingSpeed.SpeedPageUploads(parserPages, parserSitMapXml));
             }
             else
             {
                 userInteraction.Info(MessageUsers.IncorrectUrl);
-
-                Environment.Exit(0);
             }
-
-            Console.ReadLine();
         }
     }
 }
