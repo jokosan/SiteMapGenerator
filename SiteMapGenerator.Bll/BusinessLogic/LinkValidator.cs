@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 
 namespace SiteMapGenerator.Bll.BusinessLogic
 {
@@ -23,6 +24,24 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             Uri uriResult;
             return Uri.TryCreate(address, UriKind.Absolute, out uriResult)
                 && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
-        }      
+        }
+
+        public bool StatusHost(string url)
+        {
+            try
+            {
+                HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+                HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
+
+                if (myHttpWebResponse.StatusCode == HttpStatusCode.OK)
+                    return true;
+            }
+            catch
+            {
+                return false;
+            }
+
+            return false;
+        }
     }
 }

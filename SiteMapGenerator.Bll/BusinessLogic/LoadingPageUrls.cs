@@ -16,38 +16,29 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             _parser = parser;
         }
 
-        public virtual List<string> ExtractHref(string URL, int countLink)
+        public virtual List<string> ExtractHref(string URL)
         {
-            var linksResult = AnalyzeUrl(URL, _parser.HtmlParser(URL), URL);
-            int i = 0;
-
-            while (countLink >= linksResult.Count())
+            var listurlResult = new List<string>() { URL };
+            var searchLinks = new List<string>() { URL};
+            var resultParsrer = new List<string>();
+           
+            while (searchLinks.Count() != 0)
             {
-                int indexList = 1 + i;
-
-                if (indexList >= countLink)
-                    break;
-
-                string selectUriList = linksResult[indexList];
-
-                if (_linkValidator.CheckURLValid(selectUriList))
+                foreach (var item in searchLinks)
                 {
-                    var resultHtmlParser = _parser.HtmlParser(selectUriList);
-                    linksResult.AddRange(AnalyzeUrl(selectUriList, resultHtmlParser, URL));
-                    linksResult.Distinct();
+                    resultParsrer.AddRange(AnalyzeUrl(_parser.HtmlParser(item), URL));
                 }
-                else
-                {
-                    linksResult.RemoveAt(indexList);
-                }
+
+                searchLinks = resultParsrer.Except(listurlResult).ToList();
+                listurlResult.AddRange(searchLinks);
             }
 
-            return linksResult.OrderBy(x => x.Length).ToList();
+            return listurlResult.OrderBy(x => x.Length).Distinct().ToList();
         }
 
-        private List<string> AnalyzeUrl(string url, IEnumerable<string> linkedPages, string urlConst)
+        private List<string> AnalyzeUrl( IEnumerable<string> linkedPages, string urlConst)
         {
-            var urlList = new List<string> { url };
+            var urlList = new List<string>();
 
             foreach (var item in linkedPages)
             {
@@ -55,11 +46,14 @@ namespace SiteMapGenerator.Bll.BusinessLogic
 
                 if (!urlList.Any(x => x.Contains(absolut)) && absolut.Contains(urlConst))
                 {
-                    urlList.Add(absolut);
+                    if (!absolut.Contains("#"))
+                    {
+                        urlList.Add(absolut);
+                    }                   
                 }
             }
 
-            return urlList.OrderBy(x => x.Length).ToList();
+            return urlList.OrderBy(x => x.Length).Distinct().ToList();
         }
     }
 }
