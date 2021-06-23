@@ -17,10 +17,10 @@ namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
             var linkCheck = new LinkValidator();
 
             //  Act
-            LinkCheckUrlMock.SetupSequence(p => p.UrlValidation(url))
+            LinkCheckUrlMock.SetupSequence(p => p.CheckURLValid(url))
                 .Returns(resultUrlValidation);
 
-            var urlResult = linkCheck.UrlValidation(url);
+            var urlResult = linkCheck.CheckURLValid(url);
 
             // Assert
             Assert.Equal(resultUrlValidation, urlResult);
@@ -35,10 +35,10 @@ namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
             var linkCheck = new LinkValidator();
 
             //  Act
-            LinkCheckUrlMock.SetupSequence(p => p.UrlValidation(url))
+            LinkCheckUrlMock.SetupSequence(p => p.CheckURLValid(url))
                 .Returns(resultUrlValidation);
 
-            var urlResult = linkCheck.UrlValidation(url);
+            var urlResult = linkCheck.CheckURLValid(url);
 
             // Assert
             Assert.Equal(resultUrlValidation, urlResult);
@@ -52,8 +52,8 @@ namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
             var linkCheck = new LinkValidator();
 
             // Act
-            LinkCheckUrlMock.SetupSequence(p => p.AddressHostValidator(url));
-            var urlResult = linkCheck.AddressHostValidator(url);
+            LinkCheckUrlMock.SetupSequence(p => p.GetHost(url));
+            var urlResult = linkCheck.GetHost(url);
 
             // Assert
             Assert.Equal("http://microsoft.com", urlResult);

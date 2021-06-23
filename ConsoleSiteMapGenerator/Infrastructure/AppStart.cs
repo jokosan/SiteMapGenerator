@@ -1,10 +1,6 @@
 ﻿using ConsoleSiteMapGenerator.Infrastructure.Constants;
 using SiteMapGenerator.Bll.BusinessLogic;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleSiteMapGenerator.Infrastructure
 {
@@ -15,7 +11,7 @@ namespace ConsoleSiteMapGenerator.Infrastructure
             var linkValidator = new LinkValidator();
             var parser = new Parser();
             var loadingPageUrls = new LoadingPageUrls(linkValidator, parser);
-            var websiteLoadingSpeed = new WebsiteLoadingSpeed(linkValidator);
+            var webRequestServeses = new WebRequestServeses(linkValidator);
             var userInteraction = new UserInteraction();
             var printResult = new PrintResult(userInteraction);
             var loadingSiteMap = new LoadingSiteMap(parser, linkValidator);
@@ -32,7 +28,7 @@ namespace ConsoleSiteMapGenerator.Infrastructure
 
                 userInteraction.Info($"{MessageUsers.numberOfLinks} {MessageUsers.xmlSiteMap} {parserSitMapXml.Count()} {MessageUsers.parserSiteMAp} {parserPages.Count()}");
 
-                printResult.SiteMapPrint(websiteLoadingSpeed.SpeedPageUploads(parserPages, parserSitMapXml));
+                printResult.SiteMapPrint(webRequestServeses.SpeedPageUploads(parserPages, parserSitMapXml));
             }
             else
             {

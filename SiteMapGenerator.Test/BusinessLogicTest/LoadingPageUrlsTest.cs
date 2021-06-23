@@ -13,14 +13,14 @@ namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
         public void ExtractHref_UrlValidation_ReturnParsedLinks()
         {
             // Arrange
-            var loadingPageUrls = new LoadingPageUrls(new LinkValidator());
+            var loadingPageUrls = new LoadingPageUrls(new LinkValidator(), new Parser());
             var url = "https://www.example.com/";
 
             var list = new List<string>() { "https://www.example.com/" };
 
             // Act
-            mockLoadingPage.SetupSequence(s => s.ExtractHref(url, 2)).Returns(list);
-            var result = loadingPageUrls.ExtractHref(url, 1);
+            mockLoadingPage.SetupSequence(s => s.ExtractHref(url)).Returns(list);
+            var result = loadingPageUrls.ExtractHref(url);
 
             // Assert
             Assert.Equal(list, result);

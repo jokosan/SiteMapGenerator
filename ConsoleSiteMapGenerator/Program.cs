@@ -1,6 +1,4 @@
 ﻿using ConsoleSiteMapGenerator.Infrastructure;
-using ConsoleSiteMapGenerator.Infrastructure.Constants;
-using SiteMapGenerator.Bll.BusinessLogic;
 using System;
 
 namespace ConsoleSiteMapGenerator

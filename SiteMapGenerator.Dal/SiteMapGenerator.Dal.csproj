@@ -27,4 +27,8 @@
     <ProjectReference Include="..\SiteMapGenerator.Bll\SiteMapGenerator.Bll.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

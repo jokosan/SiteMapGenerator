@@ -10,8 +10,8 @@ using SiteMapGenerator.Dal.dbContext;
 namespace SiteMapGenerator.Dal.Migrations
 {
     [DbContext(typeof(SitMapDbContext))]
-    [Migration("20210616132208_SiteMap-Start")]
-    partial class SiteMapStart
+    [Migration("20210623102455_MyFirstMigration")]
+    partial class MyFirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -57,6 +57,12 @@ namespace SiteMapGenerator.Dal.Migrations
 
                     b.Property<long?>("WebsiteLoadingSpeed")
                         .HasColumnType("bigint");
+
+                    b.Property<bool>("parseLink")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("sitemapLink")
+                        .HasColumnType("bit");
 
                     b.HasKey("IdPageInfo");
 

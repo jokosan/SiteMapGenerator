@@ -7,10 +7,11 @@ namespace SiteMapGenerator.Web.Utilities
     {
         public static void Initialize(IServiceCollection services)
         {
-            services.AddScoped<GeneratingSitemap>();
+            services.AddScoped<LoadingSiteMap>();
             services.AddScoped<LinkValidator>();
             services.AddScoped<LoadingPageUrls>();
-            services.AddScoped<WebsiteLoadingSpeed>();
+            services.AddScoped<WebRequestServeses>();
+            services.AddScoped<Parser>();
         }
     }
 }

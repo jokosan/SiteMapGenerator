@@ -7,11 +7,11 @@ using System.Net;
 
 namespace SiteMapGenerator.Bll.BusinessLogic
 {
-    public class WebsiteLoadingSpeed
+    public class WebRequestServeses
     {
         private readonly LinkValidator _linkValidator;
 
-        public WebsiteLoadingSpeed(
+        public WebRequestServeses(
             LinkValidator linkValidator)
         {
             _linkValidator = linkValidator;

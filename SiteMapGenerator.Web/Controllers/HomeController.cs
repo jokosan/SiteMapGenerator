@@ -1,45 +1,53 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Logging;
 using SiteMapGenerator.Bll.BusinessLogic;
 using SiteMapGenerator.Dal.Serveses;
-using SiteMapGenerator.Web.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SiteMapGenerator.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly GeneratingSitemap _generatingSitemap;
+        private readonly LinkValidator _linkValidator;
         private readonly GetFromDatabase _getFromDatabase;
         private readonly SaveDbSiteMap _saveDbSiteMap;
+        private readonly LoadingPageUrls _loadingPageUrls;
+        private readonly LoadingSiteMap _loadingSiteMap;
+        private readonly WebRequestServeses _webRequestServeses;
 
         public HomeController(
-          GeneratingSitemap generatingSitemap,
           GetFromDatabase getFromDatabase,
-          SaveDbSiteMap saveDbSiteMap)
+          SaveDbSiteMap saveDbSiteMap,
+          LinkValidator linkValidator,
+          LoadingPageUrls loadingPageUrls,
+          LoadingSiteMap loadingSiteMap,
+          WebRequestServeses webRequestServeses)
         {
-            _generatingSitemap = generatingSitemap;
             _getFromDatabase = getFromDatabase;
             _saveDbSiteMap = saveDbSiteMap;
+            _linkValidator = linkValidator;
+            _loadingPageUrls = loadingPageUrls;
+            _loadingSiteMap = loadingSiteMap;
+            _webRequestServeses = webRequestServeses;
         }
 
         public IActionResult Index()
-                 => View();
+                 => View(_getFromDatabase.GetArchiveOfRequest());
 
         [HttpGet]
-        public IActionResult UrlPages(string url, int? numberOfLinks)
+        public IActionResult UrlPages(string url)
         {
-            if (_generatingSitemap.ValidationAddresses(url) && numberOfLinks != null)
+            if (_linkValidator.CheckURLValid(url))
             {
                 int idLink = _saveDbSiteMap.SaveUserRequest(url);
-                TempData["listError"] = _generatingSitemap.Loading(url, numberOfLinks.Value);
+                var resultLink = _webRequestServeses.SpeedPageUploads(_loadingPageUrls.ExtractHref(url), _loadingSiteMap.SearchSitemap(url));
 
-                return RedirectToAction("UserQueryResult", "Home", new RouteValueDictionary(new
+                _saveDbSiteMap.Save(resultLink, _getFromDatabase.GetSiteMap().Where(x => x.ArchiveOfRequestsId == idLink), idLink);
+
+
+                return RedirectToAction("ArxivDetails", "Home", new RouteValueDictionary(new
                 {
                     id = idLink
                 }));
@@ -56,12 +64,6 @@ namespace SiteMapGenerator.Web.Controllers
             if (id == null)
             {
                 return RedirectToAction("Index");
-            }
-
-            if (TempData.ContainsKey("listError"))
-            {
-                ViewBag.Error = TempData["listError"] as List<string>;
-                TempData.Keep("listError");
             }
 
             return View(_getFromDatabase.JoinTableGroup(_getFromDatabase.JoinTableUrlSiteMapToPageInfo(id.Value)));
@@ -98,5 +100,7 @@ namespace SiteMapGenerator.Web.Controllers
                     .Where(x => x.PageTestDate.Value.Date == date.Value.Date));
             }
         }
+
+
     }
 }

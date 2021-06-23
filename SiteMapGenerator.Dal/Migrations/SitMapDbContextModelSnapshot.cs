@@ -56,6 +56,12 @@ namespace SiteMapGenerator.Dal.Migrations
                     b.Property<long?>("WebsiteLoadingSpeed")
                         .HasColumnType("bigint");
 
+                    b.Property<bool>("parseLink")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("sitemapLink")
+                        .HasColumnType("bit");
+
                     b.HasKey("IdPageInfo");
 
                     b.ToTable("PageInfos");

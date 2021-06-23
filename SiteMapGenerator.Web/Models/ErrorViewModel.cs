@@ -1,5 +1,3 @@
-using System;
-
 namespace SiteMapGenerator.Web.Models
 {
     public class ErrorViewModel

@@ -28,6 +28,8 @@
                            columns.Add(model => model.NameSite);
                            columns.Add(model => model.StatusCode);
                            columns.Add(model => model.Elapsed);
+                           columns.Add(model => model.parseLink);
+                           columns.Add(model => model.sitemapLink);
                        })
                        .Using(GridFilterMode.Excel)
                        .Empty("No data found")

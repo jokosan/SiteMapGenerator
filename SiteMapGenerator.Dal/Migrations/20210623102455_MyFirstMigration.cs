@@ -3,7 +3,7 @@ using System;
 
 namespace SiteMapGenerator.Dal.Migrations
 {
-    public partial class SiteMapStart : Migration
+    public partial class MyFirstMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -30,7 +30,9 @@ namespace SiteMapGenerator.Dal.Migrations
                     WebsiteLoadingSpeed = table.Column<long>(type: "bigint", nullable: true),
                     StatusCode = table.Column<int>(type: "int", nullable: true),
                     PageTestDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Elapsed = table.Column<int>(type: "int", nullable: true)
+                    Elapsed = table.Column<int>(type: "int", nullable: true),
+                    parseLink = table.Column<bool>(type: "bit", nullable: false),
+                    sitemapLink = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
