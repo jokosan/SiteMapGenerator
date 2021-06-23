@@ -8,13 +8,12 @@ namespace SiteMapGenerator.Bll.BusinessLogic
 {
     public class WebsiteLoadingSpeed
     {
-        private readonly LinkValidator _linkCheck;
+        private readonly LinkValidator _linkValidator;
 
         public WebsiteLoadingSpeed(
-            LinkValidator linkCheck
-            )
+            LinkValidator linkValidator)
         {
-            _linkCheck = linkCheck;
+            _linkValidator = linkValidator;
         }
 
         public virtual List<UrlResult> SpeedPageUploads(List<string> url)
@@ -25,7 +24,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             {
                 try
                 {
-                    if (_linkCheck.UrlValidation(item))
+                    if (_linkValidator.CheckURLValid(item))
                     {
                         var sw = new Stopwatch();
                         var req = HttpGet(item);
@@ -33,11 +32,10 @@ namespace SiteMapGenerator.Bll.BusinessLogic
                         sw.Start();
                         HttpWebResponse res = (HttpWebResponse)req.GetResponse();
                         var rescode = (int)res.StatusCode;
+                        var sc = res.StatusDescription;
                         sw.Stop();
 
                         res.Close();
-
-                        TimeSpan timeToLoad = sw.Elapsed;
 
                         resultSiteMapList.Add(CreateJoinResultBll(item, rescode, sw));
                     }
@@ -61,7 +59,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             return req;
         }
 
-        private UrlResult CreateJoinResultBll(string url, int rescode, Stopwatch sw = null)
+        private UrlResult CreateJoinResultBll(string url, int rescode, Stopwatch sw)
         {
             var resultJoinResult = new UrlResult();
 
