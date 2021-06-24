@@ -1,33 +1,33 @@
-﻿using SiteMapGenerator.Bll.BusinessLogic.Contract;
-using SiteMapGenerator.Bll.Models.Bll;
-using SiteMapGenerator.Bll.Services.Contract;
+﻿using SiteMapGenerator.Bll.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 
 namespace SiteMapGenerator.Bll.BusinessLogic
 {
-    public class WebsiteLoadingSpeed : IWebsiteLoadingSpeed
+    public class WebsiteLoadingSpeed
     {
-        private readonly ILinkCheck _linkCheck;
+        private readonly LinkValidator _linkValidator;
 
         public WebsiteLoadingSpeed(
-            ILinkCheck linkCheck
-            )
+            LinkValidator linkValidator)
         {
-            _linkCheck = linkCheck;
+            _linkValidator = linkValidator;
         }
 
-        public List<JoinResultBll> SpeedPageUploads(List<string> url, int? IdUrl = null)
+        public virtual List<UrlResult> SpeedPageUploads(IEnumerable<string> linkParser, IEnumerable<string> linkSitemap)
         {
-            var resultSiteMapList = new List<JoinResultBll>();
+            var resultLink = linkParser.Union(linkSitemap).Distinct();
 
-            foreach (var item in url)
+            var resultSiteMapList = new List<UrlResult>();
+
+            foreach (var item in resultLink)
             {
                 try
                 {
-                    if (_linkCheck.UrlValidation(item))
+                    if (_linkValidator.CheckURLValid(item))
                     {
                         var sw = new Stopwatch();
                         var req = HttpGet(item);
@@ -39,14 +39,11 @@ namespace SiteMapGenerator.Bll.BusinessLogic
 
                         res.Close();
 
-                        TimeSpan timeToLoad = sw.Elapsed;
-
-                        resultSiteMapList.Add(CreateJoinResultBll(item, rescode, sw));
+                        resultSiteMapList.Add(CreateJoinResultBll(item, rescode, sw, linkParser.Any(x => x.Contains(item)), linkSitemap.Any(x => x.Contains(item))));
                     }
                 }
                 catch
                 {
-                    resultSiteMapList.Add(CreateJoinResultBll(item, 404)); ///??
                 }
             }
 
@@ -64,18 +61,20 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             return req;
         }
 
-        private JoinResultBll CreateJoinResultBll(string url, int rescode, Stopwatch sw = null)
+        private UrlResult CreateJoinResultBll(string url, int rescode, Stopwatch sw, bool parser, bool sitmap)
         {
-            var resultJoinResult = new JoinResultBll();
+            var resultJoinResult = new UrlResult();
 
             resultJoinResult.NameSite = url;
             resultJoinResult.StatusCode = rescode;
             resultJoinResult.PageTestDate = DateTime.Now;
+            resultJoinResult.parseLink = parser;
+            resultJoinResult.sitemapLink = sitmap;
 
             if (sw != null)
             {
                 resultJoinResult.WebsiteLoadingSpeed = sw.ElapsedTicks;
-                resultJoinResult.Elapsed = sw.Elapsed;
+                resultJoinResult.Elapsed = sw.Elapsed.Milliseconds;
             }
 
             return resultJoinResult;

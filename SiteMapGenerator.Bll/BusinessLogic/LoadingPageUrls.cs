@@ -1,97 +1,61 @@
 ﻿using HtmlAgilityPack;
-using SiteMapGenerator.Bll.BusinessLogic.Contract;
-using SiteMapGenerator.Bll.Services.Contract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace SiteMapGenerator.Bll.BusinessLogic
 {
-    public class LoadingPageUrls : ILoadingPageUrls
+    public class LoadingPageUrls
     {
-        private readonly ILinkCheck _linkCheck;
+        private readonly LinkValidator _linkValidator;
+        private readonly Parser _parser;
 
         public LoadingPageUrls(
-            ILinkCheck linkCheck)
+            LinkValidator linkValidator,
+            Parser parser)
         {
-            _linkCheck = linkCheck;
+            _linkValidator = linkValidator;
+            _parser = parser;
         }
 
-        public List<string> ExtractHref(string URL, int countLink)
+        public virtual List<string> ExtractHref(string URL)
         {
-            var linksResult = SearchForLinks(URL);
-            int i = 0;
+            var listurlResult = new List<string>() { URL };
+            var searchLinks = new List<string>() { URL };
+            var resultParsrer = new List<string>();
 
-            do
+            while (searchLinks.Count() != 0)
             {
-                int indexList = 1 + i;
-
-                if (indexList >= countLink)
-                    break;
-
-                string selectUriList = linksResult[indexList];
-
-                if (_linkCheck.UrlValidation(selectUriList))
+                foreach (var item in searchLinks)
                 {
-                    linksResult.AddRange(SearchForLinks(linksResult[indexList]));
-                }
-                else
-                {
-                    linksResult.RemoveAt(indexList);
+                    resultParsrer.AddRange(AnalyzeUrl(_parser.HtmlParser(item), URL));
                 }
 
-            } while (countLink >= linksResult.Count());
+                searchLinks = resultParsrer.Except(listurlResult).ToList();
+                listurlResult.AddRange(searchLinks);
+            }
 
-            var result = linksResult.Distinct().ToList();
-
-            return linksResult.OrderBy(x => x.Length).ToList();
+            return listurlResult.OrderBy(x => x.Length).Distinct().ToList();
         }
 
-        private List<string> SearchForLinks(string url)
+        private List<string> AnalyzeUrl(IEnumerable<string> linkedPages, string urlConst)
         {
             var urlList = new List<string>();
-            urlList.Add(url);
 
-            try
+            foreach (var item in linkedPages)
             {
-                var doc = new HtmlWeb().Load(url);
-                var linkTags = doc.DocumentNode.Descendants("link");
-                var linkedPages = doc.DocumentNode.Descendants("a")
-                                                  .Select(a => a.GetAttributeValue("href", null))
-                                                  .Where(u => !String.IsNullOrEmpty(u));
+                string absolut = _parser.GetAbsoluteUrlString(urlConst, item);
 
-                string http = SelectHttp(url);
-
-                string urls = url.Replace(http, string.Empty);
-                string result = urls.Trim(new char[] { '/', ':' });
-
-                foreach (var item in linkedPages)
+                if (!urlList.Any(x => x.Contains(absolut)) && absolut.Contains(urlConst))
                 {
-                    if (urlList.Any(x => x.Contains(item)) == false)
+                    if (!absolut.Contains("#"))
                     {
-                        if (item.Contains(url))
-                        {
-                            urlList.Add(item);
-                        }
-                        else if (item.Contains(result) && item.Contains("//"))
-                        {
-                            urlList.Add($"{http}{item.Replace("//", string.Empty)}");
-                        }
-                        else if (item.StartsWith("http://") == false && item.StartsWith("https://") == false)
-                        {
-                            urlList.Add(url + item.TrimStart(new char[] { '/' }));
-                        }
+                        urlList.Add(absolut);
                     }
                 }
+            }
 
-                return urlList.OrderBy(x => x.Length).ToList();
-            }
-            catch
-            {
-                return new List<string>();
-            }
+            return urlList.OrderBy(x => x.Length).Distinct().ToList();
         }
-
-        private string SelectHttp(string url) => url.Contains("http://") ? "http://" : "https://";
     }
 }
