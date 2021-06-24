@@ -61,21 +61,18 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             return req;
         }
 
-        private UrlResult CreateJoinResultBll(string url, int rescode, Stopwatch sw, bool parser, bool sitmap)
+        private UrlResult CreateJoinResultBll(string url, int rescode, Stopwatch sw, bool parser, bool sitmap) //???
         {
-            var resultJoinResult = new UrlResult();
-
-            resultJoinResult.NameSite = url;
-            resultJoinResult.StatusCode = rescode;
-            resultJoinResult.PageTestDate = DateTime.Now;
-            resultJoinResult.parseLink = parser;
-            resultJoinResult.sitemapLink = sitmap;
-
-            if (sw != null)
+            var resultJoinResult = new UrlResult()
             {
-                resultJoinResult.WebsiteLoadingSpeed = sw.ElapsedTicks;
-                resultJoinResult.Elapsed = sw.Elapsed.Milliseconds;
-            }
+                NameSite = url,
+                StatusCode = rescode,
+                PageTestDate = DateTime.Now,
+                parseLink = parser,
+                sitemapLink = sitmap,
+                WebsiteLoadingSpeed = sw.ElapsedTicks,
+                Elapsed = sw.Elapsed.Milliseconds,
+            };
 
             return resultJoinResult;
         }

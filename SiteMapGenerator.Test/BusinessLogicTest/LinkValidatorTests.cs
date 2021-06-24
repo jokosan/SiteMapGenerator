@@ -58,5 +58,35 @@ namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
             // Assert
             Assert.Equal("http://microsoft.com", urlResult);
         }
+
+        [Fact]
+        public void StatusHost_StatusLink_returTrue()
+        { 
+            // Arrange
+            string url = "http://microsoft.com/";
+            var linkValidator = new LinkValidator();
+            LinkCheckUrlMock.SetupSequence(p => p.StatusHost(It.IsAny<string>())).Returns(true);
+
+            // Act
+            var resuilt = linkValidator.StatusHost(url);
+
+            //  Assert
+            Assert.Equal(resuilt, true);
+        }
+
+        [Fact]
+        public void StatusHost_StatusLink_returnFalse()
+        {
+            // Arrange
+            string url = "http://test.com";
+            var linkValidator = new LinkValidator();
+            LinkCheckUrlMock.SetupSequence(p => p.StatusHost(It.IsAny<string>())).Returns(false);
+
+            // Act
+            var resuilt = linkValidator.StatusHost(url);
+
+            //  Assert
+            Assert.Equal(resuilt, false);
+        }
     }
 }

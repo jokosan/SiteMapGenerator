@@ -13,7 +13,7 @@ namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
         public void ExtractHref_UrlValidation_ReturnParsedLinks()
         {
             // Arrange
-            var loadingPageUrls = new LoadingPageUrls(new LinkValidator(), new Parser());
+            var loadingPageUrls = new LoadingPageUrls(new HtmlParser());
             var url = "https://www.example.com/";
 
             var list = new List<string>() { "https://www.example.com/" };

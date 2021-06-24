@@ -1,36 +1,13 @@
-﻿using HtmlAgilityPack;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Xml;
 
 namespace SiteMapGenerator.Bll.BusinessLogic
 {
-    public class Parser
+    public class SitemapParser
     {
-        public IEnumerable<string> HtmlParser(string urlName)
-        {
-            var doc = new HtmlWeb().Load(urlName);
-            var linkTags = doc.DocumentNode.Descendants("link");
-
-            return doc.DocumentNode.Descendants("a")
-                                    .Select(a => a.GetAttributeValue("href", null))
-                                    .Where(u => !String.IsNullOrEmpty(u)).Distinct();
-        }
-
-        public virtual string GetAbsoluteUrlString(string baseUrl, string url)
-        {
-            var uri = new Uri(url, UriKind.RelativeOrAbsolute);
-            if (!uri.IsAbsoluteUri)
-            {
-                uri = new Uri(new Uri(baseUrl), uri);
-            }
-
-            return uri.ToString();
-        }
-
-        public IEnumerable<string> XMLSiteMap(string xml)
+        public virtual IEnumerable<string> XMLSiteMap(string xml)
         {
             var resultXmlSiteMap = new List<string>();
 
@@ -67,15 +44,14 @@ namespace SiteMapGenerator.Bll.BusinessLogic
         public bool CheckForSitemapAvailability(string robotsTxt)
            => robotsTxt.Contains("Sitemap");
 
-        public string ResultUrlSiteMAp(string[] robotsTxt)
+        public string ReturnUrlSitemap(string robots)
         {
-            foreach (var item in robotsTxt)
+            if (robots.Contains("Sitemap"))
             {
-                if (item.StartsWith("Sitemap"))
-                {
-                    int start = item.IndexOf(":") + 1;
-                    return item.Substring(start).Trim(' ');
-                }
+                var indexStart = robots.LastIndexOf("Sitemap:") + "Sitemap:".Length;
+                var substringLength = robots.LastIndexOf("xml") + "xml".Length;
+
+                return robots.Substring(indexStart, substringLength - indexStart).Trim(' ');
             }
 
             return string.Empty;

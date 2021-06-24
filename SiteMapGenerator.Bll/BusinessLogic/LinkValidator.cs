@@ -26,7 +26,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
                 && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
         }
 
-        public bool StatusHost(string url)
+        public virtual bool StatusHost(string url)
         {
             try
             {

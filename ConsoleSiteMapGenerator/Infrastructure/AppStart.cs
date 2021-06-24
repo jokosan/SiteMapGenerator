@@ -9,12 +9,13 @@ namespace ConsoleSiteMapGenerator.Infrastructure
         public void Start()
         {
             var linkValidator = new LinkValidator();
-            var parser = new Parser();
-            var loadingPageUrls = new LoadingPageUrls(linkValidator, parser);
+            var htmlParser = new HtmlParser();
+            var loadingPageUrls = new LoadingPageUrls(htmlParser);
             var webRequestServeses = new WebRequestServeses(linkValidator);
             var userInteraction = new UserInteraction();
             var printResult = new PrintResult(userInteraction);
-            var loadingSiteMap = new LoadingSiteMap(parser, linkValidator);
+            var sitemapParser = new SitemapParser();
+            var loadingSiteMap = new LoadingSiteMap(sitemapParser, linkValidator);
 
             userInteraction.Info(MessageUsers.Start);
             string userUrl = userInteraction.UserValueInput();

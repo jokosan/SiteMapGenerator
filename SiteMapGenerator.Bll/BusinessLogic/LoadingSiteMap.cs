@@ -6,45 +6,38 @@ namespace SiteMapGenerator.Bll.BusinessLogic
 {
     public class LoadingSiteMap
     {
-        private readonly Parser _parser;
+        private readonly SitemapParser _sitemapParser;
         private readonly LinkValidator _linkValidator;
 
         public LoadingSiteMap(
-            Parser parser,
+            SitemapParser sitemapParser,
             LinkValidator linkValidator)
         {
-            _parser = parser;
+            _sitemapParser = sitemapParser;
             _linkValidator = linkValidator;
         }
-
-        private const string robots = "robots.txt";
-        private const string sitemap = "sitemap.xml";
 
         public IEnumerable<string> SearchSitemap(string url)
         {
             var resultSitmap = new List<string>();
 
-            var urlRobotsTxt = url + robots;
-            var urlSitemap = url + sitemap;
+            var urlRobotsTxt = url + "robots.txt";
+            var urlSitemap = url + "sitemap.xml";
 
-            if (_linkValidator.StatusHost(urlRobotsTxt))
+            if (_linkValidator.StatusHost(urlSitemap))
+            {
+                resultSitmap.AddRange(_sitemapParser.XMLSiteMap(urlSitemap));
+            }
+            else if (_linkValidator.StatusHost(urlRobotsTxt))
             {
                 string fileContent = new WebClient().DownloadString(urlRobotsTxt);
 
-                if (_parser.CheckForSitemapAvailability(fileContent))
+                if (_sitemapParser.CheckForSitemapAvailability(fileContent))
                 {
-                    var delimiters = new string[] { "\n", "\r" };
+                    var resultSitemapCrawler = _sitemapParser.XMLSiteMap(_sitemapParser.ReturnUrlSitemap(fileContent));
 
-                    var subs = fileContent
-                                 .Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
-
-                    string linkSiteMap = _parser.ResultUrlSiteMAp(subs);
-                    resultSitmap.AddRange(_parser.XMLSiteMap(linkSiteMap));
+                    resultSitmap.AddRange(resultSitemapCrawler);
                 }
-            }
-            else if (_linkValidator.StatusHost(urlSitemap))
-            {
-                resultSitmap.AddRange(_parser.XMLSiteMap(urlSitemap));
             }
             else
             {

@@ -11,7 +11,8 @@ namespace SiteMapGenerator.Web.Utilities
             services.AddScoped<LinkValidator>();
             services.AddScoped<LoadingPageUrls>();
             services.AddScoped<WebRequestServeses>();
-            services.AddScoped<Parser>();
+            services.AddScoped<HtmlParser>();
+            services.AddScoped<SitemapParser>();
         }
     }
 }

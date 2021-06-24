@@ -5,15 +5,12 @@ namespace SiteMapGenerator.Bll.BusinessLogic
 {
     public class LoadingPageUrls
     {
-        private readonly LinkValidator _linkValidator;
-        private readonly Parser _parser;
+        private readonly HtmlParser _htmlParser;
 
         public LoadingPageUrls(
-            LinkValidator linkValidator,
-            Parser parser)
+            HtmlParser htmlParser)
         {
-            _linkValidator = linkValidator;
-            _parser = parser;
+            _htmlParser = htmlParser;
         }
 
         public virtual List<string> ExtractHref(string URL)
@@ -26,7 +23,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             {
                 foreach (var item in searchLinks)
                 {
-                    resultParsrer.AddRange(AnalyzeUrl(_parser.HtmlParser(item), URL));
+                    resultParsrer.AddRange(_htmlParser.Parser(item, URL));
                 }
 
                 searchLinks = resultParsrer.Except(listurlResult).ToList();
@@ -34,26 +31,6 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             }
 
             return listurlResult.OrderBy(x => x.Length).Distinct().ToList();
-        }
-
-        private List<string> AnalyzeUrl(IEnumerable<string> linkedPages, string urlConst)
-        {
-            var urlList = new List<string>();
-
-            foreach (var item in linkedPages)
-            {
-                string absolut = _parser.GetAbsoluteUrlString(urlConst, item);
-
-                if (!urlList.Any(x => x.Contains(absolut)) && absolut.Contains(urlConst))
-                {
-                    if (!absolut.Contains("#"))
-                    {
-                        urlList.Add(absolut);
-                    }
-                }
-            }
-
-            return urlList.OrderBy(x => x.Length).Distinct().ToList();
-        }
+        }              
     }
 }

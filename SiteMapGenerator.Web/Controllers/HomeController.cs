@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Routing;
 using SiteMapGenerator.Bll.BusinessLogic;
 using SiteMapGenerator.Dal.Serveses;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace SiteMapGenerator.Web.Controllers
