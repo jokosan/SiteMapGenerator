@@ -1,7 +1,7 @@
-﻿using Xunit;
-using Moq;
+﻿using Moq;
 using SiteMapGenerator.Bll.BusinessLogic;
 using System.Collections.Generic;
+using Xunit;
 
 namespace SiteMapGenerator.Bll.Test.BusinessLogicTest
 {
@@ -19,8 +19,8 @@ namespace SiteMapGenerator.Bll.Test.BusinessLogicTest
             var list = new List<string>() { "https://www.example.com/" };
 
             // Act
-            mockHtmlParser.SetupSequence(s => s.Parser(url, url)).Returns(list);
-            var result = htmlParser.Parser(url, url);
+            mockHtmlParser.SetupSequence(s => s.GetAllPageLinks(url, url)).Returns(list);
+            var result = htmlParser.GetAllPageLinks(url, url);
 
             // Assert
             Assert.Equal(list[0], "https://www.example.com/");

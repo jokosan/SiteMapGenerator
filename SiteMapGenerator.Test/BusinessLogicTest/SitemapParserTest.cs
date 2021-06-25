@@ -1,13 +1,19 @@
-﻿using Xunit;
-using Moq;
+﻿using Moq;
 using SiteMapGenerator.Bll.BusinessLogic;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Xml;
+using Xunit;
 
 namespace SiteMapGenerator.Bll.Test.BusinessLogicTest
 {
     public class SitemapParserTest
     {
-        private Mock<SitemapParser> mockHtmlParser = new Mock<SitemapParser>();
+        private Mock<SitemapParser> mockSitemapParser = new();
+        private Mock<WebClient> mockWebClient = new();
+        private Mock<XmlDocument> mockXmlDocument = new();
+
 
         [Fact]
         public void XMLSiteMap_() // ???
@@ -15,14 +21,12 @@ namespace SiteMapGenerator.Bll.Test.BusinessLogicTest
             // Arrange
             var xmlLink = new SitemapParser();
             var linkSitemap = "https://www.ukad-group.com/";
+         
+            //Act
+            var result = xmlLink.XMLSiteMap("https://www.ukad-group.com/sitemap.xml");
 
-            var list = new List<string>() { "https://www.ukad-group.com/" };
-
-            // Act
-            mockHtmlParser.SetupSequence(s => s.XMLSiteMap(It.IsAny<string>())).Returns(list);
-            //var result = xmlLink.XMLSiteMap(linkSitemap);
-
-            // Assert
+            //Assert
+            Assert.Equal(result.ToList()[0], linkSitemap );
         }
 
         [Fact]

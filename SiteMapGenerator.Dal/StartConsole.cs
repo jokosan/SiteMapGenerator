@@ -8,15 +8,21 @@ namespace SiteMapGenerator.Dal
 {
     public class StartConsole
     {
-        private readonly SaveDbSiteMap _saveDbSiteMap;
-        private readonly GetFromDatabase _getFromDatabase;
+        private readonly TableArchiveOfRequest _tableArchiveOfRequest;
+        private readonly TableUrlSiteMap _tableUrlSiteMap;
+        private readonly TablePageInfo _pageInfo;
+        private readonly TableUrlResult _tableUrlResult;
 
         public StartConsole(
-            SaveDbSiteMap saveDbSiteMap,
-            GetFromDatabase getFromDatabase)
+           TableArchiveOfRequest tableArchiveOfRequest,
+          TableUrlResult tableUrlResult,
+          TablePageInfo pageInfo,
+          TableUrlSiteMap tableUrlSiteMap)
         {
-            _saveDbSiteMap = saveDbSiteMap;
-            _getFromDatabase = getFromDatabase;
+            _tableArchiveOfRequest = tableArchiveOfRequest;
+            _tableUrlResult = tableUrlResult;
+            _tableUrlSiteMap = tableUrlSiteMap;
+            _pageInfo = pageInfo;
         }
 
         public void StartMain()

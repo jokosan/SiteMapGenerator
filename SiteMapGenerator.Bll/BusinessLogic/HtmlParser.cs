@@ -7,7 +7,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
 {
     public class HtmlParser
     {
-        public virtual IEnumerable<string> Parser(string urlName, string UserLink)
+        public virtual IEnumerable<string> GetAllPageLinks(string urlName, string UserLink)
         {
             var doc = new HtmlWeb().Load(urlName);
             var linkTags = doc.DocumentNode.Descendants("link");

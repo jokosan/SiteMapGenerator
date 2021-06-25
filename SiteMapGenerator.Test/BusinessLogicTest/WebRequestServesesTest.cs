@@ -3,11 +3,12 @@ using SiteMapGenerator.Bll.BusinessLogic;
 using SiteMapGenerator.Bll.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
 {
-    public class WebsiteLoadingSpeedTest
+    public class WebRequestServesesTest
     {
         private Mock<WebRequestServeses> mockWebsiteLoadingSpeed = new Mock<WebRequestServeses>();
 
@@ -31,7 +32,7 @@ namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
             var result = websiteLoadingSpeed.SpeedPageUploads(parseList, sitMapList);
 
             // Asert
-            Assert.Equal(result[0].NameSite, "https://www.example.com/");
+            Assert.Equal(result.ToList()[0].NameSite, "https://www.example.com/");
         }
     }
 }

@@ -10,40 +10,46 @@ namespace SiteMapGenerator.Web.Controllers
     public class HomeController : Controller
     {
         private readonly LinkValidator _linkValidator;
-        private readonly GetFromDatabase _getFromDatabase;
-        private readonly SaveDbSiteMap _saveDbSiteMap;
         private readonly LoadingPageUrls _loadingPageUrls;
         private readonly LoadingSiteMap _loadingSiteMap;
         private readonly WebRequestServeses _webRequestServeses;
+        private readonly TableArchiveOfRequest _tableArchiveOfRequest;
+        private readonly TableUrlSiteMap _tableUrlSiteMap;
+        private readonly TablePageInfo _pageInfo;
+        private readonly TableUrlResult _tableUrlResult;
 
         public HomeController(
-          GetFromDatabase getFromDatabase,
-          SaveDbSiteMap saveDbSiteMap,
           LinkValidator linkValidator,
           LoadingPageUrls loadingPageUrls,
           LoadingSiteMap loadingSiteMap,
-          WebRequestServeses webRequestServeses)
+          WebRequestServeses webRequestServeses,
+          TableArchiveOfRequest tableArchiveOfRequest,
+          TableUrlResult tableUrlResult,
+          TablePageInfo pageInfo,
+          TableUrlSiteMap tableUrlSiteMap)
         {
-            _getFromDatabase = getFromDatabase;
-            _saveDbSiteMap = saveDbSiteMap;
             _linkValidator = linkValidator;
             _loadingPageUrls = loadingPageUrls;
             _loadingSiteMap = loadingSiteMap;
             _webRequestServeses = webRequestServeses;
+            _tableArchiveOfRequest = tableArchiveOfRequest;
+            _tableUrlResult = tableUrlResult;
+            _tableUrlSiteMap = tableUrlSiteMap;
+            _pageInfo = pageInfo;
         }
 
         public IActionResult Index()
-                 => View(_getFromDatabase.GetArchiveOfRequest());
+                 => View(_tableArchiveOfRequest.GetArchiveOfRequest());
 
         [HttpGet]
         public IActionResult UrlPages(string url)
         {
             if (_linkValidator.CheckURLValid(url))
             {
-                int idLink = _saveDbSiteMap.SaveUserRequest(url);
+                int idLink = _tableArchiveOfRequest.SaveUserRequest(url);
                 var resultLink = _webRequestServeses.SpeedPageUploads(_loadingPageUrls.ExtractHref(url), _loadingSiteMap.SearchSitemap(url));
 
-                _saveDbSiteMap.Save(resultLink, _getFromDatabase.GetSiteMap().Where(x => x.ArchiveOfRequestsId == idLink), idLink);
+                _tableUrlResult.Save(resultLink, _tableUrlSiteMap.RequestToGetMatchesForGiven(idLink), idLink);
 
 
                 return RedirectToAction("ArxivDetails", "Home", new RouteValueDictionary(new
@@ -65,11 +71,13 @@ namespace SiteMapGenerator.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(_getFromDatabase.JoinTableGroup(_getFromDatabase.JoinTableUrlSiteMapToPageInfo(id.Value)));
+            return View(_tableUrlResult.JoinTableGroup(_tableUrlResult.JoinTableUrlSiteMapToPageInfo(id.Value)));
         }
 
         public IActionResult ArxivRequest()
-            => View(_getFromDatabase.GetArchiveOfRequest());
+        {
+            return View(_tableArchiveOfRequest.GetArchiveOfRequest());
+        }
 
         public IActionResult ArxivDetails(int? id, DateTime? date)
         {
@@ -82,7 +90,7 @@ namespace SiteMapGenerator.Web.Controllers
 
             if (date == null)
             {
-                var result = _getFromDatabase.JoinTableUrlSiteMapToPageInfo(id.Value);
+                var result = _tableUrlResult.JoinTableUrlSiteMapToPageInfo(id.Value);
 
                 if (result.Count() != 0 || result != null)
                 {
@@ -95,11 +103,9 @@ namespace SiteMapGenerator.Web.Controllers
             }
             else
             {
-                return View(_getFromDatabase.JoinTableUrlSiteMapToPageInfo(id.Value)
+                return View(_tableUrlResult.JoinTableUrlSiteMapToPageInfo(id.Value)
                     .Where(x => x.PageTestDate.Value.Date == date.Value.Date));
             }
         }
-
-
     }
 }

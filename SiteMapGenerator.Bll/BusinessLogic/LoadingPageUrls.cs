@@ -13,7 +13,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             _htmlParser = htmlParser;
         }
 
-        public virtual List<string> ExtractHref(string URL)
+        public virtual IEnumerable<string> ExtractHref(string URL)
         {
             var listurlResult = new List<string>() { URL };
             var searchLinks = new List<string>() { URL };
@@ -23,14 +23,14 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             {
                 foreach (var item in searchLinks)
                 {
-                    resultParsrer.AddRange(_htmlParser.Parser(item, URL));
+                    resultParsrer.AddRange(_htmlParser.GetAllPageLinks(item, URL));
                 }
 
                 searchLinks = resultParsrer.Except(listurlResult).ToList();
                 listurlResult.AddRange(searchLinks);
             }
 
-            return listurlResult.OrderBy(x => x.Length).Distinct().ToList();
-        }              
+            return listurlResult.OrderBy(x => x.Length).Distinct();
+        }
     }
 }

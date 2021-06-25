@@ -61,7 +61,7 @@ namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
 
         [Fact]
         public void StatusHost_StatusLink_returTrue()
-        { 
+        {
             // Arrange
             string url = "http://microsoft.com/";
             var linkValidator = new LinkValidator();

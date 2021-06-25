@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 
 namespace SiteMapGenerator.Bll.BusinessLogic
@@ -17,7 +16,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             _linkValidator = linkValidator;
         }
 
-        public IEnumerable<string> SearchSitemap(string url)
+        public virtual IEnumerable<string> SearchSitemap(string url)
         {
             var resultSitmap = new List<string>();
 

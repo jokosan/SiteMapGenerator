@@ -17,7 +17,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             _linkValidator = linkValidator;
         }
 
-        public virtual List<UrlResult> SpeedPageUploads(IEnumerable<string> linkParser, IEnumerable<string> linkSitemap)
+        public virtual IEnumerable<UrlResult> SpeedPageUploads(IEnumerable<string> linkParser, IEnumerable<string> linkSitemap)
         {
             var resultLink = linkParser.Union(linkSitemap).Distinct();
 
@@ -39,7 +39,10 @@ namespace SiteMapGenerator.Bll.BusinessLogic
 
                         res.Close();
 
-                        resultSiteMapList.Add(CreateJoinResultBll(item, rescode, sw, linkParser.Any(x => x.Contains(item)), linkSitemap.Any(x => x.Contains(item))));
+                        var presenceOfLinksInTheParser = linkParser.Any(x => x.Contains(item));
+                        var presenceOfLinksInTheSitemap = linkSitemap.Any(x => x.Contains(item));
+
+                        resultSiteMapList.Add(CreateJoinResultBll(item, rescode, sw, presenceOfLinksInTheParser, presenceOfLinksInTheSitemap));
                     }
                 }
                 catch
@@ -61,15 +64,15 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             return req;
         }
 
-        private UrlResult CreateJoinResultBll(string url, int rescode, Stopwatch sw, bool parser, bool sitmap) //???
+        private UrlResult CreateJoinResultBll(string url, int rescode, Stopwatch sw, bool parserHtml, bool parserSitmap)
         {
             var resultJoinResult = new UrlResult()
             {
                 NameSite = url,
                 StatusCode = rescode,
                 PageTestDate = DateTime.Now,
-                parseLink = parser,
-                sitemapLink = sitmap,
+                parseLink = parserHtml,
+                sitemapLink = parserSitmap,
                 WebsiteLoadingSpeed = sw.ElapsedTicks,
                 Elapsed = sw.Elapsed.Milliseconds,
             };

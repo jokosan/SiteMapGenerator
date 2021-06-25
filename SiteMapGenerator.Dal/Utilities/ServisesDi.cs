@@ -8,8 +8,10 @@ namespace SiteMapGenerator.Dal.Utilities
         public static void Initialize(IServiceCollection services)
         {
             services.AddScoped<StartConsole>();
-            services.AddScoped<GetFromDatabase>();
-            services.AddScoped<SaveDbSiteMap>();
+            services.AddScoped<TablePageInfo>();
+            services.AddScoped<TableArchiveOfRequest>();
+            services.AddScoped<TableUrlResult>();
+            services.AddScoped<TableUrlSiteMap>();
         }
     }
 }
