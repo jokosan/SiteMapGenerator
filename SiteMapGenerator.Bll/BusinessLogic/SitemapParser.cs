@@ -7,7 +7,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
 {
     public class SitemapParser
     {
-        public virtual IEnumerable<string> XMLSiteMap(string xml)
+        public virtual IEnumerable<string> XMLSiteMap(string xmlLink)
         {
             var resultXmlSiteMap = new List<string>();
 
@@ -18,7 +18,7 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             wc.Encoding = System.Text.Encoding.UTF8;
 
             /* Download the document as a string*/
-            string sitemapString = wc.DownloadString(xml);
+            string sitemapString = wc.DownloadString(xmlLink);
 
             /*Create a new xml document*/
             XmlDocument urldoc = new XmlDocument();

@@ -28,7 +28,7 @@ namespace SiteMapGenerator.Dal
         public void StartMain()
         {
             var linkValidator = new LinkValidator();
-            var parser = new HtmlParser();
+            var parser = new HtmlParser(linkValidator);
             var loadingPageUrls = new LoadingPageUrls(parser);
             var webRequestServeses = new WebRequestServeses(linkValidator);
             var userInteraction = new UserInteraction();

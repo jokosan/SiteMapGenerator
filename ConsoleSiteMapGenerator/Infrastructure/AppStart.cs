@@ -9,7 +9,7 @@ namespace ConsoleSiteMapGenerator.Infrastructure
         public void Start()
         {
             var linkValidator = new LinkValidator();
-            var htmlParser = new HtmlParser();
+            var htmlParser = new HtmlParser(linkValidator);
             var loadingPageUrls = new LoadingPageUrls(htmlParser);
             var webRequestServeses = new WebRequestServeses(linkValidator);
             var userInteraction = new UserInteraction();

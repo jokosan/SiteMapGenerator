@@ -16,12 +16,12 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             _linkValidator = linkValidator;
         }
 
-        public virtual IEnumerable<string> SearchSitemap(string url)
+        public virtual IEnumerable<string> SearchSitemap(string userUrl)
         {
             var resultSitmap = new List<string>();
 
-            var urlRobotsTxt = url + "robots.txt";
-            var urlSitemap = url + "sitemap.xml";
+            var urlRobotsTxt = userUrl + "robots.txt";
+            var urlSitemap = userUrl + "sitemap.xml";
 
             if (_linkValidator.StatusHost(urlSitemap))
             {

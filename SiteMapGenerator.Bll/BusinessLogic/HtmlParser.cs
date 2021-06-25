@@ -7,7 +7,14 @@ namespace SiteMapGenerator.Bll.BusinessLogic
 {
     public class HtmlParser
     {
-        public virtual IEnumerable<string> GetAllPageLinks(string urlName, string UserLink)
+        private readonly LinkValidator _linkValidator;
+
+        public HtmlParser(LinkValidator linkValidator)
+        {
+            _linkValidator = linkValidator;
+        }
+
+        public virtual IEnumerable<string> GetAllPageLinks(string urlName)
         {
             var doc = new HtmlWeb().Load(urlName);
             var linkTags = doc.DocumentNode.Descendants("link");
@@ -16,18 +23,19 @@ namespace SiteMapGenerator.Bll.BusinessLogic
                                     .Select(a => a.GetAttributeValue("href", null))
                                     .Where(u => !String.IsNullOrEmpty(u)).Distinct();
 
-            return AnalyzeUrl(resultLink, UserLink);
+            return AnalyzeUrl(resultLink, urlName);
         }
 
-        private IEnumerable<string> AnalyzeUrl(IEnumerable<string> linkedPages, string UserLink)
+        private IEnumerable<string> AnalyzeUrl(IEnumerable<string> linkedPages, string userLink)
         {
             var urlList = new List<string>();
+            userLink = _linkValidator.GetHost(userLink) + "/";
 
             foreach (var item in linkedPages)
             {
-                string absolut = GetAbsoluteUrl(UserLink, item);
+                string absolut = GetAbsoluteUrl(userLink, item);
 
-                if (!urlList.Any(x => x.Contains(absolut)) && absolut.Contains(UserLink))
+                if (!urlList.Any(x => x.Contains(absolut)) && absolut.Contains(userLink))
                 {
                     if (!absolut.Contains("#"))
                     {

@@ -13,17 +13,17 @@ namespace SiteMapGenerator.Bll.BusinessLogic
             _htmlParser = htmlParser;
         }
 
-        public virtual IEnumerable<string> ExtractHref(string URL)
+        public virtual IEnumerable<string> ExtractHref(string userUrl)
         {
-            var listurlResult = new List<string>() { URL };
-            var searchLinks = new List<string>() { URL };
+            var listurlResult = new List<string>() { userUrl };
+            var searchLinks = new List<string>() { userUrl };
             var resultParsrer = new List<string>();
 
             while (searchLinks.Count() != 0)
             {
                 foreach (var item in searchLinks)
                 {
-                    resultParsrer.AddRange(_htmlParser.GetAllPageLinks(item, URL));
+                    resultParsrer.AddRange(_htmlParser.GetAllPageLinks(item));
                 }
 
                 searchLinks = resultParsrer.Except(listurlResult).ToList();
