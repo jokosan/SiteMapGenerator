@@ -22,7 +22,7 @@ namespace SiteMapGenerator.Dal.Serveses
         public virtual IEnumerable<UrlResult> JoinTableUrlSiteMapToPageInfo(int id)
         {
             var siteMapResult = _tableUrlSiteMap.GetSiteMap().Where(x => x.ArchiveOfRequestsId == id);
-            var pageInfoResult = _tablePageInfo.GetPageInfos();
+            var pageInfoResult = _tablePageInfo.GetPageInfo();
 
             return siteMapResult.Join(pageInfoResult,
               sitemap => sitemap.IdSitemap,

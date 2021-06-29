@@ -42,13 +42,18 @@ namespace SiteMapGenerator.Dal
             if (linkValidator.CheckURLValid(userUrl))
             {
                 userInteraction.Info(MessageUsers.Waiting);
+                int idLink = _tableArchiveOfRequest.SaveUserRequest(userUrl);
 
                 var parserPages = loadingPageUrls.ExtractHref(userUrl);
                 var parserSitMapXml = loadingSiteMap.SearchSitemap(userUrl);
 
                 userInteraction.Info($"{MessageUsers.numberOfLinks} {MessageUsers.xmlSiteMap} {parserSitMapXml.Count()} {MessageUsers.parserSiteMAp} {parserPages.Count()}");
 
-                printResult.SiteMapPrint(webRequestServeses.SpeedPageUploads(parserPages, parserSitMapXml));
+                var resultLink = webRequestServeses.SpeedPageUploads(loadingPageUrls.ExtractHref(userUrl), loadingSiteMap.SearchSitemap(userUrl));
+                _tableUrlResult.Save(resultLink, _tableUrlSiteMap.RequestToGetMatchesForGiven(idLink), idLink);
+
+                printResult.SiteMapPrint(_tableUrlResult.JoinTableUrlSiteMapToPageInfo(idLink)
+                        .Where(x => x.PageTestDate.Value.Date == System.DateTime.Now.Date));
             }
             else
             {

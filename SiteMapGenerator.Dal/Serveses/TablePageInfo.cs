@@ -14,7 +14,7 @@ namespace SiteMapGenerator.Dal.Serveses
             _repositoryPageInfo = repositoryPageInfo;
         }
 
-        public IQueryable<PageInfo> GetPageInfos()
+        public IQueryable<PageInfo> GetPageInfo()
           => _repositoryPageInfo.GetAll();
 
         public virtual void SavePageInfo(PageInfo row)

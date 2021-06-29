@@ -27,7 +27,7 @@ namespace SiteMapGenerator.Dal.Test.Serveses
             mockPageInfo.Setup(x => x.GetAll()).Returns(resulPageInfo.AsQueryable);
 
             // Act
-            var result = serveses.GetPageInfos();
+            var result = serveses.GetPageInfo();
 
             // Assert
             Assert.Equal(resulPageInfo, result);
