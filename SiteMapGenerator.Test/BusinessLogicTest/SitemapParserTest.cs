@@ -16,7 +16,7 @@ namespace SiteMapGenerator.Bll.Test.BusinessLogicTest
 
 
         [Fact]
-        public void XMLSiteMap_() // ???
+        public void XMLSiteMap_ParserXmlSiteMAp_ReturnList() // ???
         {
             // Arrange
             var xmlLink = new SitemapParser();
@@ -30,7 +30,7 @@ namespace SiteMapGenerator.Bll.Test.BusinessLogicTest
         }
 
         [Fact]
-        public void CheckForSitemapAvailability_()
+        public void CheckForSitemapAvailability_SearchSitemapInRobotstxt_returnTrue()
         {
             // Arrange
             var sitemapParser = new SitemapParser();
@@ -48,7 +48,7 @@ namespace SiteMapGenerator.Bll.Test.BusinessLogicTest
         }
 
         [Fact]
-        public void ReturnUrlSitemap_()
+        public void ReturnUrlSitemap_GettingLinkToSitemap_ReturnStringUrlSiteMap()
         {
             // Arrange
             var sitemapParser = new SitemapParser();

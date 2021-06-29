@@ -38,7 +38,7 @@ namespace SiteMapGenerator.Dal.Test.Serveses
         }
 
         [Fact]
-        public void SearchLinkBd__ReturnTrue()
+        public void SearchLinkBd_SearchForMatchesInTheDatabase_ReturnTrue()
         {
             // Arrange
             var serveses = new TableUrlSiteMap(mockUrlSiteMap.Object);
@@ -52,7 +52,7 @@ namespace SiteMapGenerator.Dal.Test.Serveses
         }
 
         [Fact]
-        public void SearchLinkBd__ReturnFalse()
+        public void SearchLinkBd_SearchForMatchesInTheDatabase_ReturnFalse()
         {
             // Arrange
             var serveses = new TableUrlSiteMap(mockUrlSiteMap.Object);
@@ -66,7 +66,7 @@ namespace SiteMapGenerator.Dal.Test.Serveses
         }
 
         [Fact]
-        public void RequestToGetMatchesForGiven_()
+        public void RequestToGetMatchesForGiven_GetDataThatMatchesid_ReturnIQueryable()
         {
             // Arrange
             var serveses = new TableUrlSiteMap(mockUrlSiteMap.Object);
@@ -80,7 +80,7 @@ namespace SiteMapGenerator.Dal.Test.Serveses
         }
 
         [Fact]
-        public void SaveSitemap_()
+        public void SaveSitemap_WritingDataToTheDatabase_Save()
         {
             // Arrange
             var serveses = new TableUrlSiteMap(mockUrlSiteMap.Object);

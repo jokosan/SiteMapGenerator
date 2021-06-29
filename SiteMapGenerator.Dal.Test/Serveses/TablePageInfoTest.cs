@@ -34,7 +34,7 @@ namespace SiteMapGenerator.Dal.Test.Serveses
         }
 
         [Fact]
-        public void SaveSitemap_()
+        public void SaveSitemap_WritingDataToTheDatabase_Save()
         {
             // Arrange
             var serveses = new TablePageInfo(mockPageInfo.Object);

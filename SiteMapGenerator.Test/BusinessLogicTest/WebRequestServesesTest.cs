@@ -13,7 +13,7 @@ namespace SiteMapGenerator.Test.SiteMapGenerators.Bll.BusinessLogicTest
         private Mock<WebRequestServeses> mockWebsiteLoadingSpeed = new Mock<WebRequestServeses>();
 
         [Fact]
-        public void SpeedPageUploads_()
+        public void SpeedPageUploads_PageLoadSpeed_ReturnList()
         {
             // Arrange
             var websiteLoadingSpeed = new WebRequestServeses(new LinkValidator());

@@ -35,7 +35,7 @@ namespace SiteMapGenerator.Dal.Test.Serveses
         }
 
         [Fact]
-        public void SaveUserRequest_()
+        public void SaveUserRequest_WritingDataToTheDatabase_Save()
         {
             var serveses = new TableArchiveOfRequest(mockRepositoryArchiveOfRequest.Object);
             moqTableArchiveOfRequest.SetupSequence(x => x.SaveUserRequest(It.IsAny<string>())).Returns(2);

@@ -13,7 +13,7 @@ namespace SiteMapGenerator.Bll.Test.BusinessLogicTest
         private Mock<LinkValidator> mockLinkValidator = new Mock<LinkValidator>();
 
         [Fact]
-        public void LoadingSiteMap_sitmap()
+        public void SearchSitemap_SitemapDefaultUrl_ReturnListlink()
         {
             // Arrange
             var LoadingSiteMap = new LoadingSiteMap(mockSitemapParser.Object, mockLinkValidator.Object);
@@ -32,7 +32,7 @@ namespace SiteMapGenerator.Bll.Test.BusinessLogicTest
         }
 
         [Fact]
-        public void LoadingSiteMap_robotTxt()
+        public void SearchSitemap_GetUrlSitemapThroughRobotsTxt_ReturnListlink()
         {
             // Arrange
             var LoadingSiteMap = new LoadingSiteMap(mockSitemapParser.Object, mockLinkValidator.Object);
@@ -53,7 +53,7 @@ namespace SiteMapGenerator.Bll.Test.BusinessLogicTest
         }
 
         [Fact]
-        public void LoadingSiteMap_error()
+        public void SearchSitemap_SitemapWasNotFound_RetornListMessage()
         {
             // Arrange
             var LoadingSiteMap = new LoadingSiteMap(mockSitemapParser.Object, mockLinkValidator.Object);
