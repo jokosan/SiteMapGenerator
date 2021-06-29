@@ -51,7 +51,6 @@ namespace SiteMapGenerator.Web.Controllers
 
                 _tableUrlResult.Save(resultLink, _tableUrlSiteMap.RequestToGetMatchesForGiven(idLink), idLink);
 
-
                 return RedirectToAction("ArxivDetails", "Home", new RouteValueDictionary(new
                 {
                     id = idLink
@@ -103,8 +102,7 @@ namespace SiteMapGenerator.Web.Controllers
             }
             else
             {
-                return View(_tableUrlResult.JoinTableUrlSiteMapToPageInfo(id.Value)
-                    .Where(x => x.PageTestDate.Value.Date == date.Value.Date));
+                return View(_tableUrlResult.SerQueryResult(id.Value, date.Value));
             }
         }
     }

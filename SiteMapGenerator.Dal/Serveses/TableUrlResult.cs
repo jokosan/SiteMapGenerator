@@ -85,6 +85,9 @@ namespace SiteMapGenerator.Dal.Serveses
             }
         }
 
+        public IEnumerable<UrlResult> SerQueryResult(int id, DateTime date) 
+            => JoinTableUrlSiteMapToPageInfo(id).Where(x => x.PageTestDate.Value.Date == date.Date);
+
         private int ExistingRecordId(IEnumerable<UrlSiteMap> urlSiteMaps, string item)
         {
             var result = urlSiteMaps.Where(x => x.NameSite.Contains(item));
