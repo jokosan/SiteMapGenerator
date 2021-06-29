@@ -5,7 +5,7 @@ using System.Xml;
 
 namespace SiteMapGenerator.Bll.BusinessLogic
 {
-    public class SitemapParser
+    public class SiteParser
     {
         public virtual IEnumerable<string> XMLSiteMap(string xmlLink)
         {

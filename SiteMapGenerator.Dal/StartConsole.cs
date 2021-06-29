@@ -33,8 +33,8 @@ namespace SiteMapGenerator.Dal
             var webRequestServeses = new WebRequestServeses(linkValidator);
             var userInteraction = new UserInteraction();
             var printResult = new PrintResult(userInteraction);
-            var sitemapParser = new SitemapParser();
-            var loadingSiteMap = new LoadingSiteMap(sitemapParser, linkValidator);
+            var siteParser = new SiteParser();
+            var loadingSiteMap = new LoadingSiteMap(siteParser, linkValidator);
 
             userInteraction.Info(MessageUsers.Start);
             string userUrl = userInteraction.UserValueInput();

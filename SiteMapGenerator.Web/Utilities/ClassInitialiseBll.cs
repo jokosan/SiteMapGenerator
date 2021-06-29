@@ -12,7 +12,7 @@ namespace SiteMapGenerator.Web.Utilities
             services.AddScoped<LoadingPageUrls>();
             services.AddScoped<WebRequestServeses>();
             services.AddScoped<HtmlParser>();
-            services.AddScoped<SitemapParser>();
+            services.AddScoped<SiteParser>();
         }
     }
 }

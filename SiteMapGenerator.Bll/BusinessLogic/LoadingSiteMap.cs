@@ -5,11 +5,11 @@ namespace SiteMapGenerator.Bll.BusinessLogic
 {
     public class LoadingSiteMap
     {
-        private readonly SitemapParser _sitemapParser;
+        private readonly SiteParser _sitemapParser;
         private readonly LinkValidator _linkValidator;
 
         public LoadingSiteMap(
-            SitemapParser sitemapParser,
+            SiteParser sitemapParser,
             LinkValidator linkValidator)
         {
             _sitemapParser = sitemapParser;

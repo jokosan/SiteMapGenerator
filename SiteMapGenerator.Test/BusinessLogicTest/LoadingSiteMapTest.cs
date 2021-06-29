@@ -9,7 +9,7 @@ namespace SiteMapGenerator.Bll.Test.BusinessLogicTest
     public class LoadingSiteMapTest
     {
         private Mock<LoadingSiteMap> mockLoadingSiteMap = new Mock<LoadingSiteMap>();
-        private Mock<SitemapParser> mockSitemapParser = new Mock<SitemapParser>();
+        private Mock<SiteParser> mockSitemapParser = new Mock<SiteParser>();
         private Mock<LinkValidator> mockLinkValidator = new Mock<LinkValidator>();
 
         [Fact]

@@ -14,7 +14,7 @@ namespace ConsoleSiteMapGenerator.Infrastructure
             var webRequestServeses = new WebRequestServeses(linkValidator);
             var userInteraction = new UserInteraction();
             var printResult = new PrintResult(userInteraction);
-            var sitemapParser = new SitemapParser();
+            var sitemapParser = new SiteParser();
             var loadingSiteMap = new LoadingSiteMap(sitemapParser, linkValidator);
 
             userInteraction.Info(MessageUsers.Start);
