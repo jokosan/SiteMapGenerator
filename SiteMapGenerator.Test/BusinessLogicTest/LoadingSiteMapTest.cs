@@ -22,11 +22,11 @@ namespace SiteMapGenerator.Bll.Test.BusinessLogicTest
             var listSitmap = new List<string>() { "https://www.ukad-group.com/", "https://www.ukad-group.com/blog" };
 
             // Act
-            mockLinkValidator.Setup(x => x.StatusHost("https://www.ukad-group.com/sitemap.xml")).Returns(true);            
+            mockLinkValidator.Setup(x => x.StatusHost("https://www.ukad-group.com/sitemap.xml")).Returns(true);
             mockSitemapParser.Setup(x => x.XMLSiteMap("https://www.ukad-group.com/sitemap.xml")).Returns(listSitmap);
 
             var result = LoadingSiteMap.SearchSitemap(url);
-            
+
             // Assert
             Assert.Equal(result.ToList()[0], "https://www.ukad-group.com/");
         }

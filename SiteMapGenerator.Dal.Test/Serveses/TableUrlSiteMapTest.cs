@@ -1,12 +1,9 @@
-﻿using System;
+﻿using Moq;
+using SiteMapGenerator.Dal.Models.Dal;
+using SiteMapGenerator.Dal.Serveses;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Moq;
-using SiteMapGenerator.Dal.Models.Dal;
-using SiteMapGenerator.Dal.Serveses;
 using Xunit;
 
 namespace SiteMapGenerator.Dal.Test.Serveses

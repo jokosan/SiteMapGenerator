@@ -56,6 +56,6 @@ namespace SiteMapGenerator.Bll.BusinessLogic
 
             return string.Empty;
         }
-                 
+
     }
 }

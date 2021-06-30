@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using Moq;
+﻿using Moq;
 using SiteMapGenerator.Dal.Models.Dal;
 using SiteMapGenerator.Dal.Serveses;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using Xunit;
 
 

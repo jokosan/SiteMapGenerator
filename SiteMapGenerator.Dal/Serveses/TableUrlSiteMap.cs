@@ -1,5 +1,4 @@
 ﻿using SiteMapGenerator.Dal.Models.Dal;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
@@ -23,7 +22,7 @@ namespace SiteMapGenerator.Dal.Serveses
 
         public virtual bool SearchLinkBd(string link)
             => GetSiteMap().Any(x => x.NameSite.Contains(link));
-               
+
         public int SaveSitemap(UrlSiteMap row)
         {
             _repositoryUrlSiteMap.Add(row);

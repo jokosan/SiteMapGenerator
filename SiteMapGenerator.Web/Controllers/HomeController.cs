@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using SiteMapGenerator.Bll.BusinessLogic;
-using SiteMapGenerator.Dal.Serveses;
+using SiteMapGenerator.Web.Facade;
 using System;
 using System.Linq;
 
@@ -9,47 +8,31 @@ namespace SiteMapGenerator.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly LinkValidator _linkValidator;
-        private readonly LoadingPageUrls _loadingPageUrls;
-        private readonly LoadingSiteMap _loadingSiteMap;
-        private readonly WebRequestServeses _webRequestServeses;
-        private readonly TableArchiveOfRequest _tableArchiveOfRequest;
-        private readonly TableUrlSiteMap _tableUrlSiteMap;
-        private readonly TablePageInfo _pageInfo;
-        private readonly TableUrlResult _tableUrlResult;
+        private readonly ParserFacade _parserFacade;
+        private readonly DateBaseFacade _dateBaseFacade;
 
         public HomeController(
-          LinkValidator linkValidator,
-          LoadingPageUrls loadingPageUrls,
-          LoadingSiteMap loadingSiteMap,
-          WebRequestServeses webRequestServeses,
-          TableArchiveOfRequest tableArchiveOfRequest,
-          TableUrlResult tableUrlResult,
-          TablePageInfo pageInfo,
-          TableUrlSiteMap tableUrlSiteMap)
+            ParserFacade parserFacade,
+            DateBaseFacade dateBaseFacade)
         {
-            _linkValidator = linkValidator;
-            _loadingPageUrls = loadingPageUrls;
-            _loadingSiteMap = loadingSiteMap;
-            _webRequestServeses = webRequestServeses;
-            _tableArchiveOfRequest = tableArchiveOfRequest;
-            _tableUrlResult = tableUrlResult;
-            _tableUrlSiteMap = tableUrlSiteMap;
-            _pageInfo = pageInfo;
+            _parserFacade = parserFacade;
+            _dateBaseFacade = dateBaseFacade;
         }
 
         public IActionResult Index()
-                 => View(_tableArchiveOfRequest.GetArchiveOfRequest());
+        {
+            return View(_dateBaseFacade.GetAllTableArchiveOfRequest());
+        }
 
         [HttpGet]
         public IActionResult UrlPages(string url)
         {
-            if (_linkValidator.CheckURLValid(url))
+            if (_parserFacade.CheckLink(url))
             {
-                int idLink = _tableArchiveOfRequest.SaveUserRequest(url);
-                var resultLink = _webRequestServeses.SpeedPageUploads(_loadingPageUrls.ExtractHref(url), _loadingSiteMap.SearchSitemap(url));
+                var resultLink = _parserFacade.FindLinks(url);
+                var idLink = _dateBaseFacade.GetId(url);
 
-                _tableUrlResult.Save(resultLink, _tableUrlSiteMap.RequestToGetMatchesForGiven(idLink), idLink);
+                _dateBaseFacade.Save(resultLink, idLink);
 
                 return RedirectToAction("ArxivDetails", "Home", new RouteValueDictionary(new
                 {
@@ -70,12 +53,12 @@ namespace SiteMapGenerator.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(_tableUrlResult.JoinTableGroup(_tableUrlResult.JoinTableUrlSiteMapToPageInfo(id.Value)));
+            return View(_dateBaseFacade.ResultGroupJoin(id.Value));
         }
 
         public IActionResult ArxivRequest()
         {
-            return View(_tableArchiveOfRequest.GetArchiveOfRequest());
+            return View(_dateBaseFacade.GetAllTableArchiveOfRequest());
         }
 
         public IActionResult ArxivDetails(int? id, DateTime? date)
@@ -86,24 +69,16 @@ namespace SiteMapGenerator.Web.Controllers
             }
 
             ViewBag.IdOrder = id;
+            var result = _dateBaseFacade.ResultArxivDetails(id, date);
 
-            if (date == null)
+            if (result.Count() != 0 || result != null)
             {
-                var result = _tableUrlResult.JoinTableUrlSiteMapToPageInfo(id.Value);
-
-                if (result.Count() != 0 || result != null)
-                {
-                    ViewBag.DateGroup = result.GroupBy(g =>
-                        g.PageTestDate.Value.Date)
-                        .ToDictionary(x => x.Key);
-                }
-
-                return View(result);
+                ViewBag.DateGroup = result.GroupBy(g =>
+                    g.PageTestDate.Value.Date)
+                    .ToDictionary(x => x.Key);
             }
-            else
-            {
-                return View(_tableUrlResult.SerQueryResult(id.Value, date.Value));
-            }
+
+            return View(result);
         }
     }
 }

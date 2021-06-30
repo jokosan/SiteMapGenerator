@@ -1,6 +1,5 @@
 ﻿using Moq;
 using SiteMapGenerator.Bll.BusinessLogic;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Xml;
@@ -21,12 +20,12 @@ namespace SiteMapGenerator.Bll.Test.BusinessLogicTest
             // Arrange
             var xmlLink = new SiteParser();
             var linkSitemap = "https://www.ukad-group.com/";
-         
+
             //Act
             var result = xmlLink.XMLSiteMap("https://www.ukad-group.com/sitemap.xml");
 
             //Assert
-            Assert.Equal(result.ToList()[0], linkSitemap );
+            Assert.Equal(result.ToList()[0], linkSitemap);
         }
 
         [Fact]
