@@ -22,7 +22,7 @@ namespace SiteMapGenerator.Web
         {
             services.AddControllersWithViews();
 
-            DbContextServiceCollectionDal.Initialize(services);
+            DbContextServiceCollectionDal.Initialize(services, Configuration.GetConnectionString("SitMapDb"));
             ServisesDi.Initialize(services);
             ClassInitialiseBll.Initialize(services);
         }

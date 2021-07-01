@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using SiteMapGenerator.Web.Facade;
+using SiteMapGenerator.Bll.BusinessLogic;
+using SiteMapGenerator.Dal.Serveses;
 using System;
 using System.Linq;
 
@@ -8,31 +9,33 @@ namespace SiteMapGenerator.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ParserFacade _parserFacade;
-        private readonly DateBaseFacade _dateBaseFacade;
+        private readonly TableArchiveOfRequest _tableArchiveOfRequest;
+        private readonly TableUrlResult _tableUrlResult;
+        private readonly LinkValidator _linkValidator;
 
         public HomeController(
-            ParserFacade parserFacade,
-            DateBaseFacade dateBaseFacade)
+             TableArchiveOfRequest tableArchiveOfRequest,
+             TableUrlResult tableUrlResult,
+             LinkValidator linkValidator)
         {
-            _parserFacade = parserFacade;
-            _dateBaseFacade = dateBaseFacade;
+            _tableArchiveOfRequest = tableArchiveOfRequest;
+            _tableUrlResult = tableUrlResult;
+            _linkValidator = linkValidator;
         }
 
         public IActionResult Index()
         {
-            return View(_dateBaseFacade.GetAllTableArchiveOfRequest());
+            var result = _tableArchiveOfRequest.GetArchiveOfRequest();
+
+            return View(result);
         }
 
         [HttpGet]
-        public IActionResult UrlPages(string url)
+        public IActionResult ProcessingUserRequest(string url)
         {
-            if (_parserFacade.CheckLink(url))
+            if (_linkValidator.CheckURLValid(url))
             {
-                var resultLink = _parserFacade.FindLinks(url);
-                var idLink = _dateBaseFacade.GetId(url);
-
-                _dateBaseFacade.Save(resultLink, idLink);
+                int idLink = _tableUrlResult.SearchLinksAndSaveResult(url);
 
                 return RedirectToAction("ArxivDetails", "Home", new RouteValueDictionary(new
                 {
@@ -53,12 +56,14 @@ namespace SiteMapGenerator.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(_dateBaseFacade.ResultGroupJoin(id.Value));
+            return View(_tableUrlResult.ResultGroupJoin(id.Value));
         }
 
         public IActionResult ArxivRequest()
         {
-            return View(_dateBaseFacade.GetAllTableArchiveOfRequest());
+            var result = _tableArchiveOfRequest.GetArchiveOfRequest();
+
+            return View(result);
         }
 
         public IActionResult ArxivDetails(int? id, DateTime? date)
@@ -69,7 +74,7 @@ namespace SiteMapGenerator.Web.Controllers
             }
 
             ViewBag.IdOrder = id;
-            var result = _dateBaseFacade.ResultArxivDetails(id, date);
+            var result = _tableUrlResult.ResultArxivDetails(id, date);
 
             if (result.Count() != 0 || result != null)
             {

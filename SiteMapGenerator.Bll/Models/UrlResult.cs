@@ -13,7 +13,7 @@ namespace SiteMapGenerator.Bll.Models
         public int? Elapsed { get; set; }
         public int? ElapsedMin { get; set; }
         public int? ElapsedMax { get; set; }
-        public bool parseLink { get; set; }
-        public bool sitemapLink { get; set; }
+        public bool ParseLink { get; set; }
+        public bool SitemapLink { get; set; }
     }
 }

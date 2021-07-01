@@ -71,8 +71,8 @@ namespace SiteMapGenerator.Bll.BusinessLogic
                 NameSite = url,
                 StatusCode = rescode,
                 PageTestDate = DateTime.Now,
-                parseLink = parserHtml,
-                sitemapLink = parserSitmap,
+                ParseLink = parserHtml,
+                SitemapLink = parserSitmap,
                 WebsiteLoadingSpeed = sw.ElapsedTicks,
                 Elapsed = sw.Elapsed.Milliseconds,
             };

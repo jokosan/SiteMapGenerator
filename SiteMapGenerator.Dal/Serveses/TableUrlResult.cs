@@ -1,4 +1,5 @@
-﻿using SiteMapGenerator.Bll.Models;
+﻿using SiteMapGenerator.Bll.BusinessLogic;
+using SiteMapGenerator.Bll.Models;
 using SiteMapGenerator.Dal.Models.Dal;
 using System;
 using System.Collections.Generic;
@@ -10,13 +11,25 @@ namespace SiteMapGenerator.Dal.Serveses
     {
         private readonly TablePageInfo _tablePageInfo;
         private readonly TableUrlSiteMap _tableUrlSiteMap;
+        private readonly LoadingPageUrls _loadingPageUrls;
+        private readonly LoadingSiteMap _loadingSiteMap;
+        private readonly WebRequestServeses _webRequestServeses;
+        private readonly TableArchiveOfRequest _tableArchiveOfRequest;
 
         public TableUrlResult(
             TablePageInfo tablePageInfo,
-            TableUrlSiteMap tableUrlSiteMap)
+            TableUrlSiteMap tableUrlSiteMap,
+            LoadingPageUrls loadingPageUrls,
+            LoadingSiteMap loadingSiteMap,
+            WebRequestServeses webRequestServeses,
+            TableArchiveOfRequest tableArchiveOfRequest)
         {
             _tablePageInfo = tablePageInfo;
             _tableUrlSiteMap = tableUrlSiteMap;
+            _loadingPageUrls = loadingPageUrls;
+            _loadingSiteMap = loadingSiteMap;
+            _webRequestServeses = webRequestServeses;
+            _tableArchiveOfRequest = tableArchiveOfRequest;
         }
 
         public virtual IEnumerable<UrlResult> JoinTableUrlSiteMapToPageInfo(int id)
@@ -36,8 +49,8 @@ namespace SiteMapGenerator.Dal.Serveses
                   WebsiteLoadingSpeed = pageInfo.WebsiteLoadingSpeed,
                   PageTestDate = pageInfo.PageTestDate.Value.Date,
                   Elapsed = pageInfo.Elapsed,
-                  sitemapLink = pageInfo.sitemapLink,
-                  parseLink = pageInfo.parseLink
+                  SitemapLink = pageInfo.sitemapLink,
+                  ParseLink = pageInfo.parseLink
               });
         }
 
@@ -51,8 +64,8 @@ namespace SiteMapGenerator.Dal.Serveses
                                     NameSite = y.First().NameSite,
                                     ElapsedMin = y.Min(x => x.Elapsed),
                                     ElapsedMax = y.Max(x => x.Elapsed),
-                                    parseLink = y.First().parseLink,
-                                    sitemapLink = y.First().sitemapLink
+                                    ParseLink = y.First().ParseLink,
+                                    SitemapLink = y.First().SitemapLink
                                 }).OrderBy(o => o.ElapsedMax);
         }
 
@@ -78,8 +91,8 @@ namespace SiteMapGenerator.Dal.Serveses
                 pageInfo.StatusCode = itemUrl.StatusCode;
                 pageInfo.PageTestDate = DateTime.Now;
                 pageInfo.Elapsed = itemUrl.Elapsed;
-                pageInfo.parseLink = itemUrl.parseLink;
-                pageInfo.sitemapLink = itemUrl.sitemapLink;
+                pageInfo.parseLink = itemUrl.ParseLink;
+                pageInfo.sitemapLink = itemUrl.SitemapLink;
 
                 _tablePageInfo.SavePageInfo(pageInfo);
             }
@@ -94,6 +107,40 @@ namespace SiteMapGenerator.Dal.Serveses
             var resultWhere = result.LastOrDefault();
 
             return resultWhere.IdSitemap;
+        }
+
+        public IEnumerable<UrlResult> ResultGroupJoin(int id)
+        {
+            var resultJoin = JoinTableUrlSiteMapToPageInfo(id);
+
+            return JoinTableGroup(resultJoin);
+        }
+
+        public IEnumerable<UrlResult> ResultArxivDetails(int? id, DateTime? date)
+        {
+            if (date == null)
+            {
+                return JoinTableUrlSiteMapToPageInfo(id.Value);
+            }
+            else
+            {
+                return SerQueryResult(id.Value, date.Value);
+            }
+        }
+
+        public int SearchLinksAndSaveResult(string url)
+        {
+            var idLink = _tableArchiveOfRequest.SaveUserRequest(url);
+
+            var htmlParser = _loadingPageUrls.ExtractHref(url);
+            var searchSitemap = _loadingSiteMap.SearchSitemap(url);
+
+            var resultSpeedPageUploads = _webRequestServeses.SpeedPageUploads(htmlParser, searchSitemap);
+            var getByIdArchiveOfRequests = _tableUrlSiteMap.RequestToGetMatchesForGiven(idLink);
+
+            Save(resultSpeedPageUploads, getByIdArchiveOfRequests, idLink);
+
+            return idLink;
         }
     }
 }

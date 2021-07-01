@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SiteMapGenerator.Bll.BusinessLogic;
-using SiteMapGenerator.Web.Facade;
 
 namespace SiteMapGenerator.Web.Utilities
 {
@@ -14,8 +13,6 @@ namespace SiteMapGenerator.Web.Utilities
             services.AddScoped<WebRequestServeses>();
             services.AddScoped<HtmlParser>();
             services.AddScoped<SiteParser>();
-            services.AddScoped<ParserFacade>();
-            services.AddScoped<DateBaseFacade>();
         }
     }
 }

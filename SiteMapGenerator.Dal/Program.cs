@@ -18,7 +18,7 @@ namespace SiteMapGenerator.Dal
             Host.CreateDefaultBuilder(args)
                .ConfigureServices((hostContext, services) =>
                {
-                   DbContextServiceCollectionDal.Initialize(services);
+                   DbContextServiceCollectionDal.Initialize(services, "Server=LAPTOP-DN88AAG5\\SQLEXPRESS; initial catalog=SitMapDb; integrated security=True;MultipleActiveResultSets=True");
                    ServisesDi.Initialize(services);
                });
     }
