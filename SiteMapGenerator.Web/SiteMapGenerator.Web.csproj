@@ -18,6 +18,8 @@
     </PackageReference>
     <PackageReference Include="NonFactors.Grid.Core.Mvc6" Version="6.2.4" />
     <PackageReference Include="NonFactors.Grid.Mvc6" Version="6.2.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.1.4" />
   </ItemGroup>
 
   <ItemGroup>
